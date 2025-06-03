@@ -1,0 +1,61 @@
+QUES 1 (link --> https://leetcode.com/problems/replace-elements-with-greatest-element-on-right-side/)
+    time = O(n) space = O(1)
+
+//Approach : using one variable to keep the track of max values starting from last index of the array and increasing the range by one with each iteration
+//           another variable to keep track of arr[i-1] before manipulating it
+//           then store the max value in the arr[i-1]
+class Solution {
+    public int[] replaceElements(int[] arr) {
+        int maxi = 0,current = arr[arr.length-1];
+
+        for(int i = arr.length-1; i > 0; i--)
+        {
+            maxi = Math.max(maxi, current);
+            current = arr[i-1];
+            arr[i-1] = maxi;
+        }
+        arr[arr.length-1] = -1;
+        return arr;
+    }
+}
+
+QUES 2 (link --> https://leetcode.com/problems/valid-anagram/)
+  time = O(n) space = O(1)
+
+//Approach : usinng two arrays to store frequency of char of the two strings.
+//           Then compare the arrays if there is a single difference.
+class Solution {
+    public boolean isAnagram(String s, String t) {
+        if(s.length() != t.length()) return false;
+        int[] a = new int[26];
+        int[] b = new int[26];
+        for(int i = 0; i < s.length(); i++)
+        {
+            a[(int)(s.charAt(i))-97]++;
+            b[(int)(t.charAt(i))-97]++;
+        }
+        for(int i = 0; i < 26; i++)
+        {
+            if(a[i] != b[i]) return false;
+        }
+        return true;
+    }
+}
+        
+QUES 3 (link --> https://leetcode.com/problems/is-subsequence/)
+  time = O(n) Space = O(1)
+
+//Approach : using two pointers
+class Solution {
+    public boolean isSubsequence(String s, String t) 
+    {
+        int i = 0, j = 0;
+        while(i < s.length() && j < t.length())
+        {
+            if(s.charAt(i) == t.charAt(j)) i++;
+            j++;
+        }
+        if(i < s.length() && j == t.length()) return false;
+        return true;
+    }
+}
