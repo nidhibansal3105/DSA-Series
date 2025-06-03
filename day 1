@@ -1,0 +1,83 @@
+QUES 1 (link --> https://leetcode.com/problems/score-of-a-string/)
+        time = O(n) space = O(1)
+
+//Approach : directly sum up the abs difference by calculating through simple formula
+class Solution {
+    public int scoreOfString(String s) {
+        int sum = 0;
+        for(int i = 1; i < s.length(); i++)
+        {
+            sum += Math.abs((int)s.charAt(i-1) - (int)s.charAt(i));
+        }
+        return sum;
+    }
+}
+
+QUES 2 (link --> https://leetcode.com/problems/concatenation-of-array/)
+        time = O(n) space = O(2n)
+        
+//approach : simply iterate the array and store the value in respective positions of ans array
+class Solution {
+    public int[] getConcatenation(int[] nums) {
+        int[] ans = new int[2*nums.length];
+        for(int i = 0; i < nums.length; i++)
+        {
+            ans[i] = ans[i+nums.length] = nums[i];
+        }
+        return ans;
+    }
+}
+
+QUES 3 (link --> https://leetcode.com/problems/contains-duplicate/)
+        time = O(nlogn) space = O(n)
+
+//Approach : apply merge sort then check whether at some index the rear element == to previous one or not
+class Solution {
+    public static int[] merge(int[] a, int[] b)              // merge sort
+    {
+        int l1 = a.length;
+        int l2 = b.length;
+        int[] c = new int[l1+l2];
+        int i = 0, j = 0,k = 0;
+        while(i < l1 && j < l2)
+        {
+            if(a[i] > b[j])
+            {
+                c[k++] = b[j++];
+            }
+            else
+            {
+                c[k++] = a[i++];
+            }
+        }
+        while(i != l1)
+        {
+            c[k++] = a[i++];
+        }
+        while(j != l2)
+        {
+            c[k++] = b[j++];
+        }
+        return c;
+    }
+    public static int[] sort(int[] nums,int start, int end)
+    {
+        if(start == end){
+            int[] b = new int[1];
+            b[0] = nums[start];
+            return b;
+        }
+        int mid = (start+end)/2;
+        int[] h1 = sort(nums, start,mid);
+        int[] h2 = sort(nums,mid+1,end);
+        int[] ans = merge(h1,h2);
+        return ans;
+    }
+    public boolean containsDuplicate(int[] nums) {
+        int[] ans = sort(nums,0,nums.length-1);
+        for(int i = 0; i < ans.length-1; i++)
+        {
+            if(ans[i] == ans[i+1]) return true;
+        }
+        return false;
+    }
