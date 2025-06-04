@@ -1,0 +1,69 @@
+//Ques 1  (link --> https://leetcode.com/problems/append-characters-to-string-to-make-subsequence/)
+//        time = O() space = O(1)
+
+//Approach : Iterate t till the word which is not present in string s.
+//         : The length of the string from that word will be your ans
+class Solution {
+    public int appendCharacters(String s, String t) {
+        int i = 0;
+        int j = 0;
+        while(i < s.length() && j < t.length())
+        {
+            if(s.charAt(i) != t.charAt(j)) i++;
+            else {
+                i++;
+                j++;
+            }
+        }
+        return t.length()-j;
+    }
+}
+
+//Ques 2 (link --> https://leetcode.com/problems/length-of-last-word/submissions/1653695707/)
+//       time = O(n) space = O(1)     
+
+//Approach : start iterating string s from last
+           // : make a pointer and move it towards left if it encounters white space and stops once it encounter the char
+           // : then make another pointer starting from i-th position iterate it towards left until it encounters the the white space 
+           // : then i-j gives the length of the last word
+class Solution {
+    public int lengthOfLastWord(String s) {
+        int i = s.length()-1;
+        while(s.charAt(i) == ' ')
+        {
+            i--;
+        }
+        int j = i;
+        while(s.charAt(j) != ' ')
+        {
+            j--;
+            if(j < 0) {                 // checks the case of words itself
+                break;
+            }
+        }
+        return i-j;
+    }
+}
+
+//Ques 3 (link --> https://leetcode.com/problems/number-of-senior-citizens/submissions/1653721747/)
+//       time = O(1) space = O(1)
+
+//Approach : got the age substring convert it to its equivalent integer
+//         : then store these ages in a new array[100] 
+//         : check how many have age > 60 count it
+class Solution {
+    public int countSeniors(String[] details) {
+        //11 12 indices 
+        int[] age = new int[details.length];
+        for(int i = 0; i < details.length; i++)
+        {
+            age[i] = Integer.valueOf(details[i].substring(11,13));
+        }
+        int count = 0;
+        for(int i = 0; i < details.length; i++)
+        {
+            if(age[i] > 60) count++;
+        }
+        return count;
+    }
+}
