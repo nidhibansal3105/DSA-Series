@@ -1,0 +1,166 @@
+//Ques 1 : (link --> https://leetcode.com/problems/two-sum/)
+//           time = O(n) space = O(n) 
+
+//Approach : "HashMap"
+//            iterate over arr if its complement(target-nums[i]) exists in the hashmap then return their indices 
+//            esle just add it in the hashmap
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        HashMap<Integer, Integer> hs = new HashMap<>();
+        for(int i = nums.length-1; i >= 0; i--)
+        {
+            if(hs.containsKey(target-nums[i])) return new int[]{hs.get(target-nums[i]), i};
+            hs.put(nums[i], i);
+        }
+        return new int[]{-1,-1};
+    }
+}
+
+//Ques 2 : (link --> https://leetcode.com/problems/longest-common-prefix/)
+//           time = O(n*m) space = (m)   ***** m--> strs[i].length() n--> strs.length
+
+//Approch : "simple iteration" 
+//           store the str[0] to ans variable
+//           start iterating the arr and find intersection of the present iteration and ans through intersection function
+//           at last return ans
+
+//better Approach : "sort the array in lexographical order"     ***** (Arrays.sort(strs))---> sort arrays in place with nlogn *****
+//                   then find the intersection of first and last element of the arr
+class Solution {
+    public static String intersection(String a, String b)
+    {
+        String res = "";
+        if(a.length() >= b.length()){
+            for(int i = 0; i < b.length(); i++){
+                if(a.charAt(i) != b.charAt(i)) return res;
+                else{
+                    res = res+b.charAt(i);
+                }
+            }
+        }
+        else{
+            for(int i = 0; i < a.length(); i++){
+                if(a.charAt(i) != b.charAt(i)) return res;
+                else{
+                    res = res+a.charAt(i);
+                }
+            }
+        }
+        return res;
+    }
+    public String longestCommonPrefix(String[] strs) {
+        String ans = strs[0];
+        for(int i = 1; i < strs.length; i++)
+        {
+            if(intersection(ans,strs[i]).length() < ans.length())
+            {
+                ans = intersection(ans,strs[i]);
+            }
+        }
+        return ans;
+    }
+}
+
+//Ques 3 : (link --> https://leetcode.com/problems/string-matching-in-an-array/)
+//         time = O(n^2 * (l^2+n)) space = O(n*l)
+
+//Approach : "Simple iteration"
+//            iterate over the words arr.
+//            with each iteration check whether its present in the ans list or not 
+//            then if its not check whether there is some other element among the elements ahead with which it forms substring relation by checksubstring func
+//            return the ans list(in the func consider the conditions well)
+class Solution {
+    public static void checkSubstring(String a, String b, List<String> l)
+    {
+        if(b.contains(a) && !l.contains(a))
+        {
+            l.add(a);
+        }
+        else if(a.contains(b) && !l.contains(b)){
+            l.add(b);
+        }
+    }
+    public List<String> stringMatching(String[] words) {
+        List<String> list = new LinkedList<>();
+        for(int i = 0; i < words.length; i++)
+        {
+            for(int j = i+1; j < words.length; j++)
+            {
+                checkSubstring(words[i], words[j], list);
+            }
+        }
+        return list;
+    }
+}
+
+//Ques 4 : (link --> https://leetcode.com/problems/group-anagrams/)
+//         time = O(n^2 * l) space = O(n)
+
+//Approach : "Two Stacks"
+
+//Better Approach : "use hashMap<String, List<String>> "
+class Solution{
+    public static boolean isAnagram(String s, String t){
+        if(s.length() != t.length()) return false;
+        int[] a = new int[26];
+        int[] b = new int[26];
+        for (int i = 0; i < t.length(); i++)
+        {
+            a[t.charAt(i)-'a']++;
+            b[s.charAt(i)-'a']++;
+        }
+        for(int i = 0; i < 26; i++)
+        {
+            if(a[i] != b[i]) return false;
+        }
+        return true;
+    }
+
+    public List<List<String>> groupAnagrams(String[] strs)
+    {
+        List<List<String>> list = new LinkedList<List<String>>();
+        Queue<String> qt = new LinkedList<>();
+        Queue<String> qu = new LinkedList<>();
+        for(int i = 0; i < strs.length; i++)
+        {
+            qt.add(strs[i]);
+        }
+
+        while(!qt.isEmpty() || !qu.isEmpty())
+        {
+            List<String> l = new LinkedList<>();
+            if(!qt.isEmpty()){
+                l.add(qt.peek());
+                qt.remove();
+                while(!qt.isEmpty()){
+                    if(isAnagram(qt.peek(), l.get(0)))
+                    {
+                        l.add(qt.peek());
+                        qt.remove();
+                    }
+                    else{
+                        qu.add(qt.peek());
+                        qt.remove();
+                    }
+                }
+            }
+            else if(!qu.isEmpty()){
+                l.add(qu.peek());
+                qu.remove();
+                while(!qu.isEmpty()){
+                    if(isAnagram(qu.peek(), l.get(0)))
+                    {
+                        l.add(qu.peek());
+                        qu.remove();
+                    }
+                    else{
+                        qt.add(qu.peek());
+                        qu.remove();
+                    }
+                }
+            }
+            list.add(l);
+        }
+        return list;
+    }
+}
