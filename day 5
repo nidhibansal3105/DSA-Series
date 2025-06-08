@@ -1,0 +1,79 @@
+//Ques 1 : (link--> https://leetcode.com/problems/pascals-triangle/)
+//         time = O(n^2) space = O(n^2)
+
+//Approach : make triangle's first element outside the loop [1] 
+//           then simply iterate the outer from 0 to numRows-1 to access previous rows
+//           iterate the inner loop accessing the inner elelments of previous rows *** the elemnts excluding first and last element
+class Solution {
+    public List<List<Integer>> generate(int numRows) {
+        List<List<Integer>> list = new LinkedList<>();
+        List<Integer> l = new LinkedList<>();
+        l.add(1);
+        list.add(l);
+        if(numRows == 1) return list;
+        for(int i = 0; i < numRows-1; i++)
+        {   
+            List<Integer> r = new LinkedList<>();
+            r.add(1);
+            for(int j = 0; j < list.get(i).size()-1; j++){
+                r.add(list.get(i).get(j)+list.get(i).get(j+1));
+            }
+            r.add(1);
+            list.add(r);
+        }
+        return list;
+    }
+}
+
+//Ques 2 : (link--> https://leetcode.com/problems/remove-element/)
+//         time = O(n) space = O(n)
+
+//Approach : "simple search"
+class Solution {
+    public int removeElement(int[] nums, int val) {
+        int[] num = new int[nums.length];
+        int j = 0;
+        for(int i = 0; i < nums.length; i++)
+        {
+            if(nums[i] != val){
+                num[j] = nums[i];
+                j++;
+            }
+        }
+        for(int i = 0; i < nums.length; i++)
+        {
+            if(i < j) nums[i] = num[i];
+            else nums[i] = 0;
+        }
+        return j;
+    }
+}
+
+//Ques 3 : (link--> https://leetcode.com/problems/isomorphic-strings/)
+//         time = O(n) space = O(n)
+
+//Aproach : "using HashMap"
+
+//Better Approach : use simply two arrays a[256], b[256] then keep track of the corresponding char of both strings using the index of the charachter
+class Solution {
+    public boolean isIsomorphicTest(String s, String t) {
+        HashMap<Character, Character> map = new HashMap<>();
+        for(int i = 0; i < s.length(); i++)
+        {
+            if(map.containsKey(t.charAt(i))){
+                if(map.get(t.charAt(i)) != s.charAt(i)) return false;
+            }
+            else{
+                map.put(t.charAt(i), s.charAt(i));
+            }
+        }
+        return true;
+    }
+    public boolean isIsomorphic(String s, String t) {
+        if(s.length() != t.length()) return false;
+        if(isIsomorphicTest(s,t) && isIsomorphicTest(t,s))
+            return true;
+        return false;
+    }
+}
+
