@@ -103,3 +103,32 @@ class Solution {
         return ans;
     }
 }
+
+//Ques 4 --> link --> (https://leetcode.com/problems/unique-email-addresses/)
+//           time - O(n^2) space = O(n)
+
+class Solution {
+    public static String normalize(String str){
+        int index = str.indexOf('@');
+        String ans = "";
+        for(int i = 0; i < index; i++)
+        {
+            if(str.charAt(i) == '+') break;
+            if(str.charAt(i) != '.') ans += str.charAt(i);
+        }
+        for(int i = index; i < str.length(); i++)
+        {
+            ans += str.charAt(i);
+        }
+        return ans;
+    }
+
+    public int numUniqueEmails(String[] emails) {
+        HashSet<String> hs = new HashSet<>();
+        for(int i = 0; i < emails.length; i++)
+        {
+            hs.add(normalize(emails[i]));
+        }
+        return hs.size();
+    }
+}
