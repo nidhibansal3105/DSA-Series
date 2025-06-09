@@ -1,0 +1,97 @@
+// Ques 2 : (link--> https://leetcode.com/problems/maximum-ascending-subarray-sum/)
+//          time = O(n) space = O(1)
+
+//Approach : with each iteration check whether prev < current or not and makes sum += current
+//           if yes then modify prev = cur
+//           if no then condition breaks, start a new subarray so make the sum = 0 
+class Solution {
+    public int maxAscendingSum(int[] nums) {
+        int max = Integer.MIN_VALUE;
+        int prev = -1;
+        int sum = 0;
+        for(int i = 0; i < nums.length; i++){
+            if(prev < nums[i]){
+                prev = nums[i];
+            }
+            else{
+                max = Math.max(sum, max);
+                sum = 0;
+                prev = nums[i];
+            }
+            sum += nums[i];
+        }
+        max = Math.max(sum, max);
+        return max;
+    }
+}
+
+
+// Ques 2 : (link--> https://leetcode.com/problems/longest-strictly-increasing-or-strictly-decreasing-subarray/)
+//          time = O(n) space = O(1)
+
+//Approach : find the max size of maxAscending subarray and maxDescending subarray
+//            Return max out of both
+class Solution {
+    public static int maxAscendingSum(int[] nums) {
+        int max = Integer.MIN_VALUE;
+        int prev = -1;
+        int count = 0;
+        for(int i = 0; i < nums.length; i++){
+            if(prev < nums[i]){
+                prev = nums[i];
+            }
+            else{
+                max = Math.max(count, max);
+                count = 0;
+                prev = nums[i];
+            }
+            count++;
+        }
+        max = Math.max(count, max);
+        return max;
+    }
+    public static int maxDescendingSum(int[] nums) {
+        int max = Integer.MIN_VALUE;
+        int prev = Integer.MAX_VALUE;
+        int count = 0;
+        for(int i = 0; i < nums.length; i++){
+            if(prev > nums[i]){
+                prev = nums[i];
+            }
+            else{
+                max = Math.max(count, max);
+                count = 0;
+                prev = nums[i];
+            }
+            count++;
+        }
+        max = Math.max(count, max);
+        return max;
+    }
+    public int longestMonotonicSubarray(int[] nums) {
+        return Math.max(maxAscendingSum(nums), maxDescendingSum(nums));
+    }
+}
+
+//Ques 3 : (link--> https://leetcode.com/problems/find-pivot-index/)
+//          time = O(n) space = O(1)
+
+//Approach : leftSum = 0, rightsum = total
+//           with each iteration calculate leftSum += nums[i-1] and rightSum -= nums[i]
+//           wherever these two values match return the index
+class Solution {
+    public int pivotIndex(int[] nums) {
+        int leftSum = 0;
+        int rightSum = 0;
+        for(int i = 0; i < nums.length; i++)
+        {
+            rightSum += nums[i];
+        }
+        for(int i = 0; i < nums.length; i++){
+            if(i != 0) leftSum += nums[i-1];
+            rightSum -= nums[i];
+            if(leftSum == rightSum) return i;
+        }
+        return -1;
+    }
+}
