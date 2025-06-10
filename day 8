@@ -1,0 +1,82 @@
+//Ques 1 : (link--> https://leetcode.com/problems/kth-distinct-string-in-an-array/)
+//         time = O(n) space = O(n)
+
+//Approach : "hashmap"
+//           store the values with their frequency
+//           then again iterate the map and if tthe value is 1 inc the j 
+//           check j == k at every step if it occurs then return  str
+//           else return ""
+class Solution {
+    public String kthDistinct(String[] arr, int k) {
+        LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
+        int j = 0;
+        for(int i = 0; i < arr.length; i++){
+            if(!map.containsKey(arr[i])){
+                map.put(arr[i], 1);
+            }
+            else{
+                int val = map.get(arr[i]) + 1;
+                map.put(arr[i], val);
+            }
+        }
+        for(String str : map.keySet()){
+            if(map.get(str) == 1) j++;
+            if(j == k) return str;
+        }
+        return "";
+    }
+}
+
+//Ques 2 : (link--> https://leetcode.com/problems/range-sum-query-immutable/)
+
+//Approach : "prefix sum"
+
+class NumArray {
+
+    int[] prefixSum;
+    public NumArray(int[] nums) {
+
+        prefixSum = new int[nums.length];
+        prefixSum[0] = nums[0];
+        for(int i = 1; i < nums.length; i++){
+            prefixSum[i] = prefixSum[i-1] + nums[i];
+        }
+    }
+    
+    public int sumRange(int left, int right) {
+        if(left == 0) return prefixSum[right];
+        return prefixSum[right] - prefixSum[left-1];
+    }
+}
+
+//Ques 3 : (link--> https://leetcode.com/problems/find-all-numbers-disappeared-in-an-array/solutions/)
+//         
+
+//Approach 1 : iterate the array then store 1 at the aux_arr[value] (this will mark the presence of that element from that range)
+//             now iterate the aux_arr and if any index found to be 0 store it in the list
+
+//Approach 2 : "negation and storing"
+//              iterate over the nums then the nums[abs(current value)-1] *= -1 if its positive 
+//              check the nums if any index element is stil positive if yes teh add index+1 in the list
+class Solution {
+    public List<Integer> findDisappearedNumbers(int[] nums) {
+        // int[] arr = new int[nums.length+1];
+        // List<Integer> list = new LinkedList<>();
+        // for(int n : nums){
+        //     if(arr[n] == 0) arr[n] = 1;
+        // }
+        // for(int i = 1; i < arr.length; i++)
+        // {
+        //     if(arr[i] == 0) list.add(i);
+        // }
+        // return list;
+        List<Integer> list = new LinkedList<>();
+        for(int num : nums){
+            if(nums[Math.abs(num)-1] > 0) nums[Math.abs(num)-1] *= -1;
+        }
+        for(int i = 0; i < nums.length; i++){
+            if(nums[i] > 0) list.add(i+1);
+        }
+        return list;
+    }
+}
