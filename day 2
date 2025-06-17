@@ -1,5 +1,5 @@
-QUES 1 (link --> https://leetcode.com/problems/replace-elements-with-greatest-element-on-right-side/)
-    time = O(n) space = O(1)
+//QUES 1 (link --> https://leetcode.com/problems/replace-elements-with-greatest-element-on-right-side/)
+ //   time = O(n) space = O(1)
 
 //Approach : using one variable to keep the track of max values starting from last index of the array and increasing the range by one with each iteration
 //           another variable to keep track of arr[i-1] before manipulating it
@@ -19,8 +19,8 @@ class Solution {
     }
 }
 
-QUES 2 (link --> https://leetcode.com/problems/valid-anagram/)
-  time = O(n) space = O(1)
+//QUES 2 (link --> https://leetcode.com/problems/valid-anagram/)
+  //time = O(n) space = O(1)
 
 //Approach : usinng two arrays to store frequency of char of the two strings.
 //           Then compare the arrays if there is a single difference.
@@ -42,8 +42,8 @@ class Solution {
     }
 }
         
-QUES 3 (link --> https://leetcode.com/problems/is-subsequence/)
-  time = O(n) Space = O(1)
+//QUES 3 (link --> https://leetcode.com/problems/is-subsequence/)
+//  time = O(n) Space = O(1)
 
 //Approach : using two pointers
 class Solution {

@@ -1,0 +1,91 @@
+//Ques 1 : (link-->https://leetcode.com/problems/find-missing-and-repeated-values/description/)
+//  time : O(n^2) space : O(n^2)
+
+//Approach: Make an auxiliary array check, iterate through the grid and increase the value of check[grid_element] by one.
+//          Now in the second loop, iterate back over the auxArr and check for the indices having 0 and 2 values.
+//          Return these indices as the ans.
+class Solution {
+    public int[] findMissingAndRepeatedValues(int[][] grid) {
+        int n = grid.length;
+        int[] check = new int[(n*n)+1];
+        int[] ans = new int[2];
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                if(check[grid[i][j]] == 0){
+                    check[grid[i][j]]++;
+                }
+                else if(check[grid[i][j]] == 1){
+                    ans[0] = grid[i][j];
+                }
+            }
+        }
+        for(int i = 1; i <= n*n; i++){
+            if(check[i] == 0){
+                ans[1] = i;
+            }
+        }
+        return ans;
+    }
+}
+
+//Ques 2 : (link--> https://leetcode.com/problems/maximum-number-of-balloons/)
+//         time : O(n) space : O(1)
+
+//Approach : same as above
+class Solution {
+    public int maxNumberOfBalloons(String text) {
+        int[] store = new int[26];
+        for(char ch : text.toCharArray()){
+            if(ch == 'b' || ch == 'a' || ch == 'n'){
+                store[ch-'a'] += 2;
+            }
+            else if(ch == 'l' || ch == 'o'){
+                store[ch-'a'] += 1;
+            }
+        }
+        int ans = store['b'-'a'];
+        ans = Math.min(ans, store['a'-'a']);
+        ans = Math.min(ans, store['n'-'a']);
+        ans = Math.min(ans, store['l'-'a']);
+        ans = Math.min(ans, store['o'-'a']);
+        return ans/2;
+    }
+}
+
+// Ques 3 : (link--> https://leetcode.com/problems/word-pattern/)
+//          time : O(n) space : O(n)
+
+//Approach : "checking using hashmap"
+//            make the string arrays out of s, pattern by using "split" method
+//            Check the equality lengths of both input string.
+//            Iterate the loop over both the string array.
+//            Store elements one string from the other value value in hashmap
+//            check the appropriate conditions
+class Solution {
+    public boolean wordPattern(String pattern, String s) {
+        String[] parts = s.split(" ");
+        String[] par = pattern.split("");
+        HashMap<String, String> check = new HashMap<>();
+
+        if(par.length != parts.length) return false;
+
+        for(int i = 0; i < parts.length; i++)
+        {
+            if(check.containsKey(parts[i]))
+            {
+                if(!check.get(parts[i]).equals(par[i])) //bugg here is we are trying to compare string objects using ==
+                    return false;
+                else 
+                    continue;
+
+            }
+            else
+            {
+                if(check.containsValue(par[i]))
+                    return false;
+            }
+            check.put(parts[i], par[i]);
+        }
+        return true;
+    }
+}
