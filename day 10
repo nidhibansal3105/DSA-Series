@@ -1,0 +1,84 @@
+//Ques 1 : (link--> https://leetcode.com/problems/design-hashset/)
+//         time = O(1) space = O(n)
+class MyHashSet {
+
+    int[] ans = new int[1000001];
+    public MyHashSet() {
+    }
+    
+    public void add(int key) {
+        ans[key] = 1;
+    }
+    
+    public void remove(int key) {
+        if(ans[key] == 1){
+            ans[key]--;
+        }
+    }
+    
+    public boolean contains(int key) {
+        if(ans[key] == 1) return true;
+        else return false;
+    }
+}
+
+//Ques 2 : (link--> https://leetcode.com/problems/design-hashmap/)
+//         time : O(1) space = O(n)
+
+class MyHashMap {
+
+    int[] ans = new int[1000001];
+    public MyHashMap() {
+    }
+    
+    public void put(int key, int value) {
+        ans[key] = value+1;
+    }
+    
+    public int get(int key) {
+        return ans[key]-1;
+    }
+    
+    public void remove(int key) {
+        ans[key] = 0;
+    }
+}
+
+//Ques 3 : (link--> https://leetcode.com/problems/height-checker/)
+//         time : O(nlogn) space : O(n)
+
+//Approach : make another array sort it the n compare it with the original arrray
+class Solution {
+    public int heightChecker(int[] heights) {
+        int[] expected = new int[heights.length];
+        for(int i = 0; i < heights.length; i++){
+            expected[i] = heights[i];
+        }
+        Arrays.sort(expected);
+        int count = 0;
+        for(int i = 0; i < heights.length; i++){
+            if(expected[i] != heights[i]) count++;
+        }
+        return count;
+    }
+}
+
+//Ques 4 : (link--> https://leetcode.com/problems/partition-array-such-that-maximum-difference-is-k/submissions/1669460684/?envType=daily-question&envId=2025-06-19)
+//         time : O(n) space : O(1)
+
+//Approach : "Sort the array keep an eye on diff of max and min values of array"
+class Solution {
+    public int partitionArray(int[] nums, int k) {
+        Arrays.sort(nums);
+        int end = 0, start = 0, count = 0;
+        while(end < nums.length){
+            if(nums[end]-nums[start] > k)
+            {
+                start = end;
+                count++;
+            }
+            else end++;
+        }
+        return count+1;
+    }
+}

@@ -42,7 +42,7 @@ class Solution {
 //Approach : "sort the array first"
 //            iterate through the array and then check if its equal to the value(number corresponding to max occurrence till now)
 //            if it doesn't matches then reset the count to one 
-//            if count > max thenn change the max and value
+//            if count > max then change the max and value
 class Solution {
     public int majorityElement(int[] nums) {
         Arrays.sort(nums);
