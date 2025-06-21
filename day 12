@@ -1,0 +1,59 @@
+//Ques 1: (link--> https://leetcode.com/problems/number-of-good-pairs/submissions/1671409798/)
+//        time : O(n)  space : O(n)
+
+//Approach : "elments having frequency (> 1) can form good pairs"
+//            no. of good pairs will be f(f-1)/2
+class Solution {
+    public int numIdenticalPairs(int[] nums) {
+        int[] arr = new int[101];
+        for(int n : nums){
+            arr[n]++;
+        }
+        int count = 0;
+        for(int n : arr){
+            if(n > 1){
+                count += (n*(n-1))/2;
+            }
+        }
+        return count;
+    }
+}
+
+//Ques 2 : (link--> https://leetcode.com/problems/pascals-triangle-ii/)
+//          time: O(n) space: O(n)
+
+//Approach : nextElement = prev*(n-k+1)/k;
+class Solution {
+    public List<Integer> getRow(int rowIndex) {
+        int n = rowIndex;
+        List<Integer> list = new LinkedList<>();
+        list.add(1);
+        long prev = 1;
+        for(int l = 1; l <= n; l++){
+            long next_value = prev*(n-l+1)/l;
+            list.add((int)(next_value));
+            prev = next_value;
+        }
+        return list;
+    }
+}
+
+//Ques 3 : (link--> https://leetcode.com/problems/divide-array-into-equal-pairs/description/)
+//         time : O(n) space : O(n)
+
+//Approach : "all the elements present must have even frequency"
+class Solution {
+    public boolean divideArray(int[] nums) {
+        int[] arr = new int[501];
+        for(int n : nums){
+            arr[n]++;
+        }
+        for(int n : arr){
+            if(n != 0 && n%2 != 0)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+}
