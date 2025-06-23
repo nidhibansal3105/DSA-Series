@@ -1,0 +1,51 @@
+//Ques 1 : (link-->https://leetcode.com/problems/destination-city/)
+//          time : O(n)  space: O(n)
+
+//Approach : ""if its not the route its the destination so the one in the destination which is not the route is the destination"""
+//           the 0th index of inner list consists of cities which forms the route to the destination city
+//           store all these in the hashMap.
+//           then compare all the 1st index elements if they are not present in the map then its the destination 
+class Solution {
+    public String destCity(List<List<String>> paths) {
+        HashMap<String, Integer> map = new HashMap<>();
+        for(int i = 0; i < paths.size(); i++){
+            map.put(paths.get(i).get(0), 0);
+        }
+        for(int i = 0; i < paths.size(); i++)
+        {
+            if(!map.containsKey(paths.get(i).get(1))){
+                return paths.get(i).get(1);
+            }
+        }
+        return "";
+    }
+}
+
+//Ques 2 : (link--> https://leetcode.com/problems/maximum-product-difference-between-two-pairs/)
+//          time : O(nlogn) space : O(1)
+
+//Approach : diff(A - B) is max when A is the max possible and B is the minimum possible.
+//           A = (max * second_max)
+//           B = (min * second_mim)
+class Solution {
+    public int maxProductDifference(int[] nums) {
+        Arrays.sort(nums);
+        return (nums[nums.length-1]*nums[nums.length-2]) - (nums[0]*nums[1]);
+    }
+}
+
+//Ques 3 : (link--> https://leetcode.com/problems/circular-sentence/description/)
+//          time : O(no. of words in sentence)  space : O(no. of words in sentence)
+
+//Approach : split the sentence then check word by word
+class Solution {
+    public boolean isCircularSentence(String sentence) {
+        String[] str = sentence.split(" ");
+        char prev = str[str.length-1].charAt(str[str.length-1].length()-1);
+        for(String s : str){
+            if(s.charAt(0) != prev) return false;
+            prev = s.charAt(s.length()-1);
+        }
+        return true;
+    }
+}
