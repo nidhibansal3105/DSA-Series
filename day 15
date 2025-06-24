@@ -1,0 +1,97 @@
+//Ques 1 : (link--> https://leetcode.com/problems/maximum-score-after-splitting-a-string/)
+//         time: O(n) space : O(1)
+
+//Approach : Assume first partition to be (0) and (1,..) claculate first = no. of zeroes in first part and back = no. of ones in second part
+//          iterate the string from(1 to last second index) such that it partitioned the string as(0,i) and (i+1,..)
+//          with each iteration check whether the added member is 1 pr 0
+//          if its 0 inc front and if its 1 dec back then store the maximum out of max front +back in max;
+class Solution {
+    public int maxScore(String s) {
+        int front = s.charAt(0) == '0' ? 1 : 0;
+        int back = 0;
+        for(int i = 1; i < s.length(); i++){
+            if(s.charAt(i) == '1') back++;
+        }
+        int max = back + front; 
+        for(int i = 1; i < s.length()-1; i++){
+            if(s.charAt(i) == '1'){
+                back--;
+            }
+            else{
+                front++;
+            }
+            max = Math.max(max, front+back);
+        }
+        return max;
+    }
+}
+
+//Ques 2 : (link--> https://leetcode.com/problems/path-crossing/)
+//          time: O(n) space : O(n)
+
+//Approach : "hashMap" HashSet eith key = x*100 + y
+class Solution {
+    public boolean isPathCrossing(String path) {
+        HashMap<String, Integer> map = new HashMap<>();
+        int x = 0;
+        int y = 0;
+        map.put("0,0", 0);
+        for(char ch : path.toCharArray())
+        {
+            if(ch == 'N') x++;
+            else if(ch == 'S') x--;
+            else if(ch == 'W') y--;
+            else if(ch == 'E') y++;
+            String key = x + "," +y;
+            if(!map.containsKey(key)) map.put(key, 0);
+            else return true;
+        }
+        return false;
+    }
+}
+
+//Ques 3 : (link--> https://leetcode.com/problems/minimum-changes-to-make-alternating-binary-string/)
+//         time : O(n) space :O(1)
+
+//Approach : make two vars swap0 swap1
+//          iterate the string then inc swap1 if even idexes have 0 and odd indexes have 1
+//          iterate the string then inc swap0 if even idexes have 1 and odd indexes have 0
+class Solution {
+    public int minOperations(String s) {
+        // List<Character> list1 = new ArrayList<>();
+        // List<Character> list0 = new ArrayList<>();
+        // int i = 0;
+        // int swap0 = 0;
+        // int swap1 = 0;
+        // while(i < s.length()){
+        //     if(i%2 == 0){
+        //         list0.add('0');
+        //         list1.add('1');
+        //     }
+        //     else{
+        //         list0.add('1');
+        //         list1.add('0');
+        //     }
+        //     i++;
+        // }
+        // i = 0;
+        // while(i < s.length()){
+        //     if(s.charAt(i) != list0.get(i)) swap0++;
+        //     if(s.charAt(i) != list1.get(i)) swap1++;
+        //     i++;
+        // }
+        int swap1 = 0;
+        int swap0 = 0;
+        for(int i = 0; i < s.length(); i++){
+            if(i%2 == 0){
+                if(s.charAt(i) == '0') swap1++;
+                else swap0++;
+            }
+            else{
+                if(s.charAt(i) == '1') swap1++;
+                else swap0++;
+            }
+        }
+        return Math.min(swap1, swap0);
+    }
+}
