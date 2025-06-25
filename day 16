@@ -21,7 +21,7 @@ class Solution {
 }
 
 //Ques 2 : (link--> https://leetcode.com/problems/longest-palindrome/)
-//         time : O(n) space : O(1)
+//         time : O(n)  space : O(1)
 
 //Aapproach : count the frequency
 //            iterate through frequency array and then if freq is even all can be used to make the palindrome if not then freq-1 can be used to make a palindrome
