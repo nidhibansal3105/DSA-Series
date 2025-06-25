@@ -1,0 +1,78 @@
+//Ques 1 : (link--> https://leetcode.com/problems/redistribute-characters-to-make-all-strings-equal/)
+//         time : O(n^2) space : O(1)
+
+//Approach : claculate the frequency then check whether each character can be given to each word of the words array
+class Solution {
+    public boolean makeEqual(String[] words) {
+        int[] count= new int[26];
+        for(String str : words){
+            for(char ch : str.toCharArray()){
+                count[ch-'a']++;
+            }
+        }
+        for(int i = 0; i < count.length; i++)
+        {
+            if(count[i]%words.length != 0){
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+//Ques 2 : (link--> https://leetcode.com/problems/longest-palindrome/)
+//         time : O(n) space : O(1)
+
+//Aapproach : count the frequency
+//            iterate through frequency array and then if freq is even all can be used to make the palindrome if not then freq-1 can be used to make a palindrome
+//            at last if there are still characters left then return ans+1;
+class Solution {
+    public int longestPalindrome(String s) {
+        int[] count = new int[52];
+        int ans = 0;
+        for(char ch : s.toCharArray()){
+            if(ch >= 'a' && ch <= 'z'){
+                count[ch-'a']++;
+            }
+            else{
+                count[ch-'A'+26]++;
+            }
+        }
+        for(int i = 0; i < 52; i++){
+            if(count[i]%2 == 1){
+                ans += count[i]-1;
+            }
+            else{
+                ans += count[i];
+            }
+        }
+        if(s.length() > ans){
+            ans++;
+        }
+        return ans;
+    }
+}
+
+//Ques 3 : (link--> https://leetcode.com/problems/largest-substring-between-two-equal-characters/)
+//         time : O(n) space : O(n)
+
+//Approach : "HashMap"
+//           if map contains the element then the length of the substring will be current index-lastindex-1 
+//           store the max lenth as max of max and the lenght we find in next iteration
+class Solution {
+    public int maxLengthBetweenEqualCharacters(String s) {
+        HashMap<Character, Integer> map = new HashMap<>();
+        int max = -1;
+        int i = 0;
+        for(char ch : s.toCharArray()){
+            if(map.containsKey(ch)){
+                max = Math.max(max, i-map.get(ch)-1);
+            }
+            else{
+                map.put(ch, i);
+            }
+            i++;
+        }
+        return max;
+    }
+}
