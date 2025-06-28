@@ -1,0 +1,93 @@
+//Ques 1 : (link--> https://leetcode.com/problems/number-of-students-unable-to-eat-lunch/)
+//         time: O(n) space: O(1)
+
+//Approach : consider only the sandwich array as we can't change it if their is no student left who can have the top sandwich then the process stops
+class Solution {
+    public int countStudents(int[] students, int[] sandwiches) {
+        if(students.length == 1) {
+            if(students[0] == sandwiches[0])
+            {
+                return 0;
+            }
+            return 1;
+        }
+        int[] count = new int[2];
+        for(int i = 0; i < students.length; i++){
+            if(students[i] == 0) count[0]++;
+            else count[1]++;
+        }
+        int i = 0;
+        while(i < sandwiches.length){
+            if(count[sandwiches[i]] > 0){
+                count[sandwiches[i]]--;
+                i++;
+            }
+            else break;
+        }
+        return students.length-i;
+    }
+}
+
+//Ques 2: (link--> https://leetcode.com/problems/time-needed-to-buy-tickets/)
+//        time: O(n+k) space : O(n)
+
+//Approach : study the frequency array till the tickets[k] index consider the edge case of k = 0 and tickets[0] = 1;
+class Solution {
+    public int timeRequiredToBuy(int[] tickets, int k) {
+        int[] count = new int[tickets[k]];
+        for(int i : tickets){
+            if(i < tickets[k]){
+                count[i]++;
+            }
+        }
+        int length = tickets.length;
+        int ans = 0;
+        for(int i = 1; i < count.length; i++){
+            if(count[i-1] > 0) length -= count[i-1];
+            ans += length;
+        }
+        for(int i = 0; i < k; i++){
+            if(tickets[i] >= tickets[k]){
+                ans++;
+            }
+        }
+        return ans+1;
+    }
+}
+
+//Ques 3: (link--> https://leetcode.com/problems/find-common-characters/)
+//        time: O(n*l)  space: O(n)
+
+//Approch : make a 2d freq space where rows represents the words and j represents the character
+//          count the freq and store it in respective position of the of this 2D space
+//          then clacule the min of each column for hac=ving the no. of common charachters then 
+//          iterate through this min array and finalize the list
+
+//you can use ony two arrays of length 26 one --> freq and other --> minfreq
+class Solution {
+    public List<String> commonChars(String[] words) {
+        int[][] count = new int[words.length+1][26];
+        List<String> list = new ArrayList<>();
+        for(int i = 0; i < words.length; i++)
+        {
+            for(char ch : words[i].toCharArray())
+            {
+                count[i][ch-'a']++;
+            }
+        }
+        for(int j = 0; j < 26; j++){
+            int min = Integer.MAX_VALUE;
+            for(int i = 0; i < words.length; i++){
+                min = Math.min(count[i][j], min);
+            }
+            count[words.length][j] = min;
+        }
+        for(int i = 0; i < 26; i++){
+            while(count[words.length][i] > 0){
+                list.add(String.valueOf((char)(i+'a')));
+                count[words.length][i]--;
+            }
+        }
+        return list;
+    }
+}
