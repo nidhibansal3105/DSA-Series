@@ -1,0 +1,68 @@
+//Ques 1 : (link--> https://leetcode.com/problems/average-waiting-time/)
+//          time : O(n) space :O (1)
+
+//Approach : same logic as given in the question
+class Solution {
+    public double averageWaitingTime(int[][] customers) {
+        long avg = 0;
+        long time = 0;
+        for(int i = 0; i < customers.length; i++){
+            if(time < customers[i][0]) time = customers[i][0]; 
+            time += customers[i][1];
+            avg += time-customers[i][0];
+        }
+        return (double)(avg)/(double)(customers.length);
+    }
+}
+
+//Ques 2 : (link--> https://leetcode.com/problems/count-vowel-strings-in-ranges/)
+//          time : (n+q) space : O(n+q)
+
+class Solution {
+    public int[] vowelStrings(String[] words, int[][] queries) {
+        int[] count = new int[words.length];
+        int[] ans = new int[queries.length];
+        String vowels = "aeiou";
+        String front;
+        String last;
+        for(int i = 0; i < words.length; i++){
+            front = String.valueOf(words[i].charAt(0));
+            last = String.valueOf(words[i].charAt(words[i].length()-1));
+            if(vowels.contains(front) && vowels.contains(last)){
+                count[i]++;
+            }
+            if(i > 0) count[i] += count[i-1];
+        }
+        for(int i = 0; i < queries.length; i++){
+            ans[i] = count[queries[i][1]];
+            if(queries[i][0] != 0){
+                ans[i] -= count[queries[i][0]-1];
+            } 
+        }
+        return ans;
+    }
+}
+
+//Ques 3 : (link--> https://leetcode.com/problems/special-array-with-x-elements-greater-than-or-equal-x/)
+//         time : O(n^2) space : O(n)
+ 
+//Approach : make count array to calculte the no. of elements greater then the index;
+//           if the no. matches the index return it
+class Solution {
+    public int specialArray(int[] nums) {
+        int max = Integer.MIN_VALUE;
+        for(int i : nums){
+            max = Math.max(max, i);
+        }
+        int[] freq = new int[max+1];
+        for(int i : nums){
+            for(int j = 0; j <= i; j++){
+                freq[j]++;
+            }
+        }
+        for(int i = 0; i < freq.length; i++){
+            if(freq[i] == i) return i;
+        }
+        return -1;
+    }
+}
