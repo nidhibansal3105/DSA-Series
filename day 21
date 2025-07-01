@@ -1,0 +1,85 @@
+//Ques 1: (link--> https://leetcode.com/problems/range-sum-query-2d-immutable/)
+//        time : O(n^2)  space : O(n)
+
+//Approach : "prefix sum"
+class NumMatrix {
+    int[][] count;
+    public NumMatrix(int[][] matrix) {
+        this.count = new int[matrix.length][matrix[0].length];
+        for(int i = 0; i < matrix.length; i++){
+            for(int j = 0; j < matrix[0].length; j++){
+                count[i][j] = matrix[i][j];
+                if(j > 0) count[i][j] += count[i][j-1];
+            }
+        }
+        for(int j = 0; j < matrix[0].length; j++){
+            for(int i = 1; i < matrix.length; i++){
+                count[i][j] += count[i-1][j];
+            }
+        }
+    }
+    
+    public int sumRegion(int row1, int col1, int row2, int col2) {
+        int res = count[row2][col2];
+        if(row1 > 0) res -= count[row1-1][col2];
+        if(col1 > 0) res -= count[row2][col1-1];
+        if(row1 > 0 && col1 > 0) res += count[row1-1][col1-1];
+        return res;
+    }
+}
+
+//Ques 2: (link--> https://leetcode.com/problems/product-of-array-except-self/submissions/1682391665/)
+//        time : O(n) space : O(n)
+
+//Approch : left product ko lete hue right side badho then right product ko lete hue left side
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        // int product = 1;
+        // int count = 0;
+        // int[] answer = new int[nums.length];
+        // for(int i : nums){
+        //     if(i != 0) product *= i;
+        //     else count++;
+        // }
+        // if(count > 1) return answer;
+        // for(int i = 0; i < nums.length; i++){
+        //     if(count > 0 && nums[i] == 0){
+        //         answer[i] = product;
+        //         break;
+        //     }
+        //     else if(count == 0){ 
+        //         answer[i] = product/nums[i];
+        //     }
+        // }
+        // return answer;
+        int left = 1;
+        int right = 1;
+        int[] answer = new int[nums.length];
+        for(int i = 0; i < nums.length; i++){
+            answer[i] = left;
+            left *= nums[i];
+        }
+        for(int i = nums.length-1; i >= 0; i--){
+            answer[i] *= right;
+            right *= nums[i];
+        }
+        return answer;
+    }
+}
+
+//Ques 3 : (link--> https://leetcode.com/problems/minimum-number-of-operations-to-move-all-balls-to-each-box/)\\
+//         time : O(n^2) space : O(n)
+
+//Approach : "prefix sum method"
+class Solution {
+    public int[] minOperations(String boxes) {
+        int[] ans = new int[boxes.length()];
+        char[] box = boxes.toCharArray();
+        for(int i = 0; i < box.length; i++){
+            for(int j = 0; j < box.length; j++){
+                ans[i] += Math.abs(i-j)* (box[j]-48);
+            }
+        }
+        return ans;
+    }
+}
