@@ -1,0 +1,68 @@
+//Ques 1 : (link--> https://leetcode.com/problems/sort-array-by-increasing-frequency/)
+//         tine :O(n^2 + r) space : O(n+r)
+
+class Solution {
+    public int[] frequencySort(int[] nums) {
+        if(nums.length == 1 || (nums.length == 2 && nums[1] >= nums[2])) return nums;
+        if(nums.length == 2 && nums[1] >= nums[2]){
+            int val = nums[1];
+            nums[1] = nums[0];
+            nums[0] = val;
+            return nums;
+        }
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
+        for(int i : nums){
+            min = Math.min(min, i);
+            max = Math.max(max, i);
+        }
+        int[] count = new int[max-min+1];
+        for(int i : nums){
+            count[i-min]++;
+        }
+        int maxCount = Integer.MIN_VALUE;
+        for(int i : count){
+            maxCount = Math.max(maxCount, i);
+        }   
+        List<List<Integer>> list = new ArrayList<>();
+        for(int i = 0; i <= maxCount; i++){
+            List<Integer> l = new ArrayList<>();
+            l.add(0);
+            list.add(l);
+        }
+        for(int i = 0; i < count.length; i++){
+            if(count[i] > 0)list.get(count[i]).add(0,i+min);
+        } 
+        int m = 0;
+        for(int i  = 1; i < list.size(); i++){
+            for(int j = 0; j < list.get(i).size()-1; j++){
+                for(int k = 0; k < i; k++){
+                    nums[m++] = list.get(i).get(j);
+                }
+            }
+        }
+        return nums;
+    }
+}
+
+//Ques 2 : (link--> https://leetcode.com/problems/top-k-frequent-elements/)
+//         time : O(n*m) space : O()
+
+class Solution {
+    public int[] topKFrequent(int[] nums, int k) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for(int i : nums){
+            map.put(i, map.getOrDefault(i, 0)+1);
+        }
+        PriorityQueue<Integer> qt = new PriorityQueue<>((a,b) -> map.get(b)-map.get(a));
+        for(int i : nums){
+            if(!qt.contains(i)) qt.offer(i);
+        }
+        int i = 0;
+        int[] res = new int[k];
+        while(i < k){
+            res[i++] = qt.poll();
+        }
+        return res;
+    }
+}
