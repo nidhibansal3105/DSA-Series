@@ -1,0 +1,125 @@
+//Ques 1 : (link--> https://leetcode.com/problems/majority-element-ii/)
+//         time : O(n)  space : O(1)
+
+//Approach : (1) --> hashing
+//           (2) --> sorting
+//           (3) --> Moore's voting algo
+class Solution {
+    public List<Integer> majorityElement(int[] nums) {
+        // HashMap<Integer, Integer> map = new HashMap<>();
+        // List<Integer> list = new ArrayList<>();
+        // for(int i = 0; i < nums.length; i++){
+        //     map.put(nums[i], map.getOrDefault(nums[i],0)+1);
+        // }
+        // for(Map.Entry<Integer, Integer> en : map.entrySet()){
+        //     if(en.getValue() > nums.length/3){
+        //         list.add(en.getKey());
+        //     }
+        // } 
+        // return list;
+
+        // Arrays.sort(nums);
+        // List<Integer> list = new ArrayList<>();
+        // int len = 0;
+        // for(int i = 0; i < nums.length-1; i++){
+        //     len++;
+        //     if(nums[i+1] != nums[i]){
+        //         if(len > nums.length/3) list.add(nums[i]);
+        //         len = 0;
+        //     }
+        // }
+        // len++;
+        // if(len > nums.length/3) list.add(nums[nums.length-1]);
+        // return list;
+
+        int candi1 = 1; 
+        int candi2 = 0;
+        int count1 = 0;
+        int count2 = 0;
+        List<Integer> list = new ArrayList<>();
+        for(int i : nums){
+            if(candi1 == i) count1++;
+            else if(candi2 == i) count2++;
+            else if(count1 == 0){ 
+                candi1 = i;
+                count1++;
+            }
+            else if(count2 == 0){
+                candi2 = i;
+                count2++;
+            }
+            else{
+                count1--;
+                count2--;
+            }
+        }
+        count1 = 0;
+        count2 = 0;
+        for(int i : nums){
+            if(candi1 == i) count1++;
+            else if(candi2 == i) count2++;
+        }
+        if(count1 > nums.length/3) list.add(candi1);
+        if(count2 > nums.length/3) list.add(candi2);
+        return list;
+    }
+}
+
+//Ques 2 : (link--> https://leetcode.com/problems/minimum-index-of-a-valid-split/)
+//         time : O(n) space : O(1)
+
+//Approach : forst finding majority elment by moore algo 
+//          then counting the frequency of majority
+//          then getting the index of split by iterating through the list and checking at each iteratio whether we can split or not
+//          then at last check the whether the index we got is a valid index or not(yani ki if the second half formed is also a valid half then return the index else return  -1)
+class Solution {
+    public int minimumIndex(List<Integer> nums) {
+        //finding maximum 
+        int cand = nums.get(0);
+        int count = 0;
+        for(int i = 0; i < nums.size(); i++){
+            if(cand == nums.get(i)) count++;
+            else if(count == 0){
+                cand = nums.get(i);
+                count++;
+            }
+            else{
+                count--;
+            }
+        }
+
+        //finding maximum frequency
+        int freq = 0;
+        for(int i = 0; i < nums.size(); i++){
+            if(cand == nums.get(i)) freq++;
+        }
+
+        //finding split index
+        count = 0;
+        int i;
+        for(i = 0; i < nums.size(); i++){
+            if(cand == nums.get(i)) count++;
+            if(count > (i+1)/2) break;
+        }
+
+        //checking whether the second half is valid array or not
+        if(freq-count > (nums.size()-i-1)/2) return i;
+        return -1;
+    }
+}
+
+//Ques 3 : (link--> https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/)
+//         time : O(n) space : O(!)
+
+//Approach : simple if if increases then add it to the profit
+class Solution {
+    public int maxProfit(int[] prices) {
+        int profit = 0;
+        for(int i = 1; i < prices.length; i++){
+            if(prices[i] > prices[i-1]){
+                profit += prices[i]-prices[i-1];
+            }
+        }
+        return profit;
+    }
+}
