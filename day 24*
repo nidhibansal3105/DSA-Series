@@ -1,0 +1,74 @@
+//Ques 1: (link--> https://leetcode.com/problems/subarray-sum-equals-k/)
+//        time : O(n)  space : O(n)
+
+class Solution {
+    public int subarraySum(int[] nums, int k) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        map.put(0,1);
+        int count = 0;
+        int sum = 0;
+        for(int i = 0; i < nums.length; i++){
+            //calculate sum till the ith index
+            sum += nums[i];
+            //check whether there exits some prefix till any index which upon subtracting from the sum will give the k and the freq of that prefix sum if it exits gives the no of subarrays possible
+
+            //putting (0, 1) in the start checks whether the whole subaaray till ith index is eligible or not
+            if(map.containsKey(sum-k)){
+                count += map.get(sum-k);
+            }
+            //put this sum in the map too
+            map.put(sum, map.getOrDefault(sum,0)+1);
+        }
+        return count;
+    }
+}
+
+//Ques 2 : (link--> https://leetcode.com/problems/make-sum-divisible-by-p/)
+
+class Solution {
+    public int minSubarray(int[] nums, int p) {
+        long sum = 0;
+        int ans = Integer.MAX_VALUE;
+        HashMap<Long, Integer> map = new HashMap<>();
+        for(int i : nums){
+            sum += i;
+        }
+        if(sum < p) return -1;
+        long k = sum%p;
+        if(k == 0) return 0;
+        sum = 0;
+        map.clear();
+        //putting this only to keep the check on complete subarray till ith index
+        map.put(sum,-1);
+        for(int i = 0; i < nums.length; i++){
+            sum += nums[i];
+        // to check subarray having remainder == k {currentSum - prevSum}%p == k ---> represents the sum\barray having remainder equal to k so that we can remove it from the main array to get a divisible array
+            if(map.containsKey((sum-k)%p)){
+                //we will figure out the minlength
+                ans = Math.min(ans, i-map.get((sum-k)%p));
+            }
+            // storing remainder every time with index as we require the length
+            map.put(sum%p, i);
+        }
+        if(ans >= nums.length) return -1;
+        return ans;
+    }
+}
+
+//Ques 3 : (link--> https://leetcode.com/problems/subarray-sums-divisible-by-k/description/)
+
+class Solution {
+    public int subarraysDivByK(int[] nums, int k) {
+        int map[] = new int[k];
+        map[0] = 1;
+        int count = 0, sum = 0, mod;
+        for(int i = 0; i < nums.length; i++) {
+            sum += nums[i];
+            mod = sum % k;
+            if(mod < 0) mod += k;
+            //if ther exists some subrray before having mod == currentSum%k so that could be removed to get a subarray that is completely divisible by k then increasing its count
+            count += map[mod]++;
+        }
+        return count;
+    }
+}
