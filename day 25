@@ -1,0 +1,40 @@
+//Ques 1 : (link--> https://leetcode.com/problems/number-of-sub-arrays-with-odd-sum/submissions/1688354530/)
+//         time : O(n) space : O(1)
+
+class Solution { 
+    public int numOfSubarrays(int[] arr) {
+        long n = arr.length;
+        long totalSub = (n*(n+1))/2;
+        //keep the track of frequency of remainders whish is in this case is 0 and 1
+        long[] map = new long[2];
+        //to have the count of complete array till the i-th iteration
+        map[0] = 1;
+        long sum = 0;
+        long count = 0;
+        for(int i : arr){
+            sum += i;
+            //finds whether the remainder ocurrs before so that can be removed from this array and we got something that is divisible by 2
+            count += map[(int)(sum % 2)];
+            //increase the freq of that remainder
+            map[(int)(sum % 2)]++;
+        }
+        return (int)((totalSub - count) % 1_000_000_007);
+    }
+}
+
+//Ques 2: (link--> https://leetcode.com/problems/minimum-number-of-swaps-to-make-the-string-balanced/)
+//        time : O(n) space : O(1)
+
+//Approach : find the maxClosing invalid brackets we can have till some iteration
+class Solution {
+    public int minSwaps(String s) {
+        int close = 0;
+        int maxClose = 0;
+        for(char ch : s.toCharArray()){
+            if(ch == ']') close++;
+            else close--;
+            maxClose = Math.max(maxClose, close);
+        }
+        return (maxClose+1)/2;
+    }
+}
