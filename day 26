@@ -1,0 +1,57 @@
+//Ques 1 : (link--> )
+//         time : O(n) sapce : O(1)
+
+//
+class Solution {
+    public int countPalindromicSubsequence(String s) {
+        //To store starting and ending index of a letter
+        int[] start = new int[26];
+        int[] end = new int[26];
+        //To keep a check on the repeated palindrome string
+        HashSet<String> check = new HashSet<>();
+        //making the start and index
+        for(int i = 0; i < s.length(); i++){
+            char ch = s.charAt(i);
+            if(start[ch-'a'] == 0){
+                start[ch-'a'] = i+1;
+            }
+            else{
+                end[ch-'a'] = i+1;
+            }
+        }
+        //making the palindromes with the first and last occurrence
+        for(int i = 0; i < 26; i++){
+            if(start[i] != 0 && end[i] != 0){
+                int j = start[i];
+                while(j < end[i]-1){
+                    String str = String.valueOf(s.charAt(start[i]-1))+String.valueOf(s.charAt(j))+String.valueOf(s.charAt(start[i]-1));
+                    if(!check.contains(str)){
+                        check.add(str);
+                    }
+                    j++;
+                }
+            }
+        }
+        return check.size();
+    }
+}
+
+//Ques 2 : (link--> https://leetcode.com/problems/number-of-pairs-of-interchangeable-rectangles/)
+//         time : O(n) space : O(n)
+
+//Approach : "HashMap" mein frequency store karenge then check karlenge kitne pairs banenge
+class Solution {
+    public long interchangeableRectangles(int[][] rectangles) {
+        HashMap<Double, Integer> map = new HashMap<>();
+        for(int i = 0; i < rectangles.length; i++){
+            double value = (double)(rectangles[i][1])/(double)(rectangles[i][0]);
+            map.put(value, map.getOrDefault(value, 0)+1);
+        }
+        long ans = 0;
+        for(Map.Entry<Double, Integer> en : map.entrySet()){
+            long n = en.getValue()-1;
+            ans += (n*(n+1))/2;
+        }
+        return ans;
+    }
+}
