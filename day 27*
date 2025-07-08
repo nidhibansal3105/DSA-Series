@@ -1,0 +1,64 @@
+//Ques 1 : (link--> https://leetcode.com/problems/maximum-product-of-the-length-of-two-palindromic-subsequences/)
+//         time : O(3^n) space: O(2^n)
+
+//Approach : "Recursin"
+//            making disjoint subsequences through recurrsion then checking wheter they are palindromic or not
+class Solution {
+
+    public static int length = 0; 
+
+    public static boolean isPalindrome(String str){
+        if(str == ""){
+            return true;
+        }
+        for(int i = 0; i <= str.length()/2; i++){
+            if(str.charAt(i) != str.charAt(str.length()-1-i)) return false;
+        }
+        return true;
+    }
+
+    public static void generateSubsequence(int i, String s, String s1, String s2){
+        if(i == s.length()){
+            if(isPalindrome(s1) && isPalindrome(s2)){
+                length = Math.max(length, s1.length()*s2.length());
+            }
+            return;
+        }
+//    either reject or acceptes by either of the two strings
+        generateSubsequence(i+1, s, s1, s2);
+        generateSubsequence(i+1, s, s1+s.substring(i,i+1), s2);
+        generateSubsequence(i+1, s, s1, s2+s.substring(i,i+1));
+    }
+
+    public int maxProduct(String s) {
+        length = 0;
+        generateSubsequence(0,s,"","");
+        return length;
+    }
+}
+
+//Ques 2: (link--> https://leetcode.com/problems/find-all-anagrams-in-a-string/)
+//        time: O(mnlogm) space : O(m*n)
+
+//OPtimised-Approach : sliding-window
+
+//Approach : simply sort the p 
+//           then make a window of p.length() and iterate through the s finding for the mathched string by sorting the cut substring 
+class Solution {
+    public List<Integer> findAnagrams(String s, String p) {
+        char[] ch = p.toCharArray();
+        Arrays.sort(ch);
+        p = String.valueOf(ch);
+        int m = p.length();
+        List<Integer> ans = new ArrayList<>();
+        for(int i = 0; i <= s.length()-m; i++){
+            char[] c = (s.substring(i,i+m)).toCharArray();
+            Arrays.sort(c);
+            String str = String.valueOf(c);
+            if(str.equals(p)){
+                ans.add(i);
+            }
+        }
+        return ans;
+    }
+}
