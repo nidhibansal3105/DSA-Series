@@ -1,7 +1,7 @@
 //Ques 1 : (link--> https://leetcode.com/problems/maximum-product-of-the-length-of-two-palindromic-subsequences/)
 //         time : O(3^n) space: O(2^n)
 
-//Approach : "Recursin"
+//Approach : "Recursion"
 //            making disjoint subsequences through recurrsion then checking wheter they are palindromic or not
 class Solution {
 

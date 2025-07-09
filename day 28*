@@ -1,0 +1,134 @@
+//Ques 1: (link--> https://leetcode.com/problems/grid-game/)
+//        time : O(n) space : O(1)
+
+//Approach: '1' '3'  1   15   in this i = 0 iteration the player1 path is indicated for player2 there are two options for maximum score eihter the bottom path or the top path
+//           1  '3' '3' '1'
+// 
+// out of these path it will take the maximum one and in each iteration we are supposed to find that this max path should be min and finally have to return it
+class Solution {
+    public long gridGame(int[][] grid) {
+        int n = grid[0].length;
+        long first = 0;
+        long second = 0;
+        for(int i = 1; i < n; i++){
+            first += grid[0][i];
+        }
+        long ans = first;
+        for(int i = 1; i < n; i++){
+            first -= grid[0][i];
+            second += grid[1][i-1];
+            ans = Math.min(ans, Math.max(first, second));
+        }
+        return ans;
+    }
+}
+
+//Ques 2 : (link-->https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/)
+//         time : O(n) space : O(1)
+
+//Approach: "simple string method"
+class Solution {
+    public int strStr(String haystack, String needle) {
+        //return haystack.indexOf(needle);
+        int n = needle.length();
+        int i = 0;
+        while(i+n <= haystack.length()){
+            String str = haystack.substring(i,i+n);
+            if(str.equals(needle)) return i;
+            i++;
+        }
+        return -1;
+    }
+}
+
+//Ques 3 : (link--> https://www.naukri.com/code360/problems/wiggle-sort_3155169?leftPanelTabValue=SUBMISSION)
+//         time : O(nlogn) space : O(n)
+
+//Approach : simply sort the array then insert the maximum no. from the last at odd positions
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+	public static int[] wiggleSort(int n, int[] arr) {
+		Arrays.sort(arr);
+		int i = 0;
+		int j = 0;
+		int k = arr.length-1;
+		int[] ans = new int[n];
+		while(i < n){
+			if(i%2 == 0){
+				ans[i++] = arr[j++];
+			}
+			else{
+				ans[i++] = arr[k--];
+			}
+		}
+		return ans;
+	}
+}
+
+//Ques 4 : (link--> https://leetcode.com/problems/largest-number/)
+//         time : O(nlongn)  space : O(n)
+
+//Approach : store the first letter of every no in the hashmap with the index then
+class Solution {
+    public String largestNumber(int[] nums) {
+        PriorityQueue<Integer> p = new PriorityQueue<>((a,b) -> {
+            String n = nums[a]+""+nums[b];
+            String m = nums[b]+""+nums[a];
+            return m.compareTo(n);
+        });
+        for(int i = 0; i < nums.length; i++){
+            p.add(i);
+        }
+        StringBuilder str = new StringBuilder();
+        while(!p.isEmpty()){
+            str.append(nums[p.poll()]);
+        }
+        for(int i : nums){
+            if(i != 0){
+                return str.toString();
+            }
+        }
+        return "0";
+    }
+}
+
+//******** 2nd approach **********
+
+// class Solution {
+//     public String largestNumber(int[] nums) {
+//         String[] strNums = new String[nums.length];
+//         for (int i = 0; i < nums.length; i++) {
+//             strNums[i] = String.valueOf(nums[i]);
+//         }
+
+//         Arrays.sort(strNums, (a, b) -> (b + a).compareTo(a + b));
+
+//         if (strNums[0].equals("0")) return "0";
+
+//         StringBuilder sb = new StringBuilder();
+//         for (String s : strNums) sb.append(s);
+//         return sb.toString();
+//     }
+// }
+
+//Ques 5 : (link--> https://leetcode.com/problems/continuous-subarray-sum/)
+//         time : O(n) space : O(n)
+
+class Solution {
+    public boolean checkSubarraySum(int[] nums, int k) {
+        if(nums.length < 2) return false;
+        long sum = 0;
+        HashMap<Long, Integer> rem = new HashMap<>();//O(n)
+        rem.put(sum, -1);
+        for(int i = 0; i < nums.length; i++){//O(n)
+            sum += nums[i];
+            if(rem.containsKey(sum%k) && (i-rem.get(sum%k)) >= 2){
+                return true;
+            }
+            rem.put(sum%k , Math.min(rem.getOrDefault(sum%k,i),i));
+        }
+        return false;
+    }
+}
+
