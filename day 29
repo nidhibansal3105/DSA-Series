@@ -1,0 +1,22 @@
+//Ques 1: (link--> https://leetcode.com/problems/repeated-dna-sequences/)
+//        time : O(n) Space : O(n)
+
+//Approach : "sliding window"
+class Solution {
+    public List<String> findRepeatedDnaSequences(String s) {
+        List<String> list = new ArrayList<>();
+        HashMap<String, Integer> map = new HashMap<>();
+        int i = 0;
+        int j = 10;
+        while(j <= s.length()){//O(n)
+            String str = s.substring(i,j);//O(1)
+            if(map.containsKey(str) && map.get(str) == 1){
+                list.add(str);
+            }
+            map.put(str, map.getOrDefault(str, 0)+1);
+            j++;
+            i++;
+        }
+        return list;
+    }
+}
