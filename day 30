@@ -1,0 +1,138 @@
+//Ques 1: (link--> https://leetcode.com/problems/push-dominoes/)
+//         time : O(n) space : O(n)
+
+//Approach: simply we have to focus on the '.' in the whole string
+//          Make two arrays left and right to store the left and right charachters with their index so that we can  predict their position
+//          in the second loop just check various conditions and predict their positions
+
+//Other-Approach: just keep the track of latestRight and lastLeft and check acccordingly
+class Solution {
+    class Pair{
+        int index;
+        int ch;
+        public Pair(int index, char ch){
+            this.index = index;
+            this.ch = ch;
+        }
+    }
+    public String pushDominoes(String dominoes) {
+        if(!dominoes.contains("R") && !dominoes.contains("L")) return dominoes;
+        int n = dominoes.length();
+        Pair[] left = new Pair[n];
+        Pair[] right = new Pair[n];
+        char prev = '$';
+        int prevId = -1;
+        char prevR = '$';
+        int prevIdR = -1;
+        int j = 0;
+        for(int i = 0; i < n; i++){
+            if(dominoes.charAt(i) == '.'){
+                left[i] = new Pair(prevId, prev);
+                if(i-1 == -1 || dominoes.charAt(i-1) == '.'){
+                    left[i].ch = prev;
+                    left[i].index = prevId;
+                }
+                else{
+                    left[i].ch = dominoes.charAt(i-1);
+                    prev = dominoes.charAt(i-1);
+                    left[i].index = i-1;
+                    prevId = i-1;
+                }
+            }
+            j = n-1-i;
+            if(dominoes.charAt(j) == '.'){
+                right[j] = new Pair(prevIdR, prevR);
+                if(j+1 == dominoes.length() || dominoes.charAt(j+1) == '.'){
+                    right[j].ch = prevR;
+                    right[j].index = prevIdR;
+                }
+                else{
+                    right[j].ch = dominoes.charAt(j+1);
+                    prevR = dominoes.charAt(j+1);
+                    right[j].index = j+1;
+                    prevIdR = j+1;
+                }
+            }
+        }
+        
+        StringBuilder ans = new StringBuilder();
+        for(int i = 0; i < n; i++){
+            char cur = dominoes.charAt(i);
+            if(cur == '.'){
+                if((left[i].ch == '$' && right[i].ch == 'R') || (right[i].ch == '$' && left[i].ch == 'L') || (left[i].ch == 'L' && right[i].ch == 'R')){
+                    ans.append('.');
+                }
+                else if(left[i].ch == '$' && right[i].ch == 'L'){
+                    ans.append('L');
+                }
+                else if(right[i].ch == '$' && left[i].ch == 'R'){
+                    ans.append('R');
+                }
+                else if(left[i].ch == right[i].ch){
+                    ans.append((char)(left[i].ch));
+                }
+                else if(left[i].ch == 'R' && right[i].ch == 'L'){
+                    if(i-left[i].index == right[i].index-i){
+                        ans.append('.');
+                    }
+                    else if(i-left[i].index < right[i].index-i){
+                        ans.append('R');
+                    }
+                    else{
+                        ans.append('L');
+                    }
+                }
+            }
+            else
+            {
+                ans.append(cur);
+            }
+        }
+        return ans.toString();
+    }
+}
+
+//Ques 2 : (link--> https://leetcode.com/problems/number-of-ways-to-split-array/)
+//         time : O(n) space : O(1)
+
+//Approach: two sum pointers one left and one right
+class Solution {
+    public int waysToSplitArray(int[] nums) {
+        long left = 0;
+        long right = 0;
+        long count = 0;
+        for(int i : nums){
+            right += i;
+        }
+        for(int i = 0; i < nums.length-1; i++){
+            left += nums[i];
+            right -= nums[i];
+            if(left >= right){
+                count++;
+            }
+        }
+        return (int)count;
+    }
+}
+
+//Ques 3: (link--> https://leetcode.com/problems/non-decreasing-array/)
+//        time : O(n) space : O(1)
+
+//Approach : simply find the gadbadi index and then satisfy some edge cases
+class Solution {
+    public boolean checkPossibility(int[] nums) {
+        if(nums.length <= 2) return true;
+        int count = 0, id = 0;
+        for(int i = 0; i < nums.length-1; i++){
+            if(nums[i] > nums[i+1]){
+                count++;
+                id = i;
+            }
+            if(count > 1) return false;
+        }
+        if(id == 0 || id == nums.length-2)return true;
+        if((nums[id+1]-nums[id-1] < 0 && nums[id+2]-nums[id] >= 0)||(nums[id+1]-nums[id-1] >= 0)) return true;
+
+        return false;
+    }
+}
