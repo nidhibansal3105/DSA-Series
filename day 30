@@ -5,7 +5,7 @@
 //          Make two arrays left and right to store the left and right charachters with their index so that we can  predict their position
 //          in the second loop just check various conditions and predict their positions
 
-//Other-Approach: just keep the track of latestRight and lastLeft and check acccordingly
+//Other-Approach: just keep the track of latestRight and lastLeft and check acccordingly.
 class Solution {
     class Pair{
         int index;
