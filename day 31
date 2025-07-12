@@ -1,0 +1,70 @@
+//Ques 1 : (link--> https://leetcode.com/problems/check-if-a-string-contains-all-binary-codes-of-size-k/)
+//         time : O(n) space : (2^k)
+
+//Approach : if all the substr of size k are stored in set then it stores all the unique ones then we can check whether the set size == total binary codes possible of length k
+class Solution {
+    public boolean hasAllCodes(String s, int k) {
+        int i = 0;
+        int j = k;
+        HashSet<String> set = new HashSet<>();
+        while(j <= s.length()){
+            set.add(s.substring(i,j));
+            i++;
+            j++;
+            if(set.size() == Math.pow(2,k)) return true;
+        }
+        return false;
+    }
+}
+
+//Ques 2 : (link--> https://leetcode.com/problems/sign-of-the-product-of-an-array/)
+//         time : O(n) space : O(1)
+
+//Approach : just count the neg elements and zero elements and then specify what will be the sign of the product
+class Solution {
+    public int arraySign(int[] nums) {
+        int countN = 0;
+        int countZ = 0;
+        for(int i : nums){
+            if(i < 0) countN++;
+            if(i == 0) countZ++;
+        }
+        if(countZ > 0) return 0;
+        if(countN%2 != 0) return -1;
+        return 1; 
+    }
+}
+
+//Ques 3 : (link--> https://leetcode.com/problems/find-the-difference-of-two-arrays/)
+//         time : O(n)  space : O(n)
+
+//Approach : use hashMap to track the repeated or common elements
+class Solution {
+    public List<List<Integer>> findDifference(int[] nums1, int[] nums2) {
+        HashMap<Integer, Integer> check = new HashMap<>();
+        HashMap<Integer, Integer> set = new HashMap<>();
+        List<List<Integer>> answer = new ArrayList<>();
+        for(int i : nums1){
+            set.put(i, 1);
+        }
+        List<Integer> list1 = new ArrayList<>();
+        for(int i : nums2){
+            if(set.containsKey(i)){
+                set.put(i, -1);
+            }
+            else{
+                if(!check.containsKey(i)){
+                    list1.add(i);
+                    check.put(i,1);
+                }
+            }
+        }
+        List<Integer> list2 = new ArrayList<>();
+        for(Map.Entry<Integer, Integer> en : set.entrySet()){
+            if(en.getValue() > 0)list2.add(en.getKey());
+        }
+        answer.add(list2);
+        answer.add(list1);
+        return answer;
+    }
+}
