@@ -1,0 +1,96 @@
+//Ques 1 : (link--> https://leetcode.com/problems/uncommon-words-from-two-sentences/)
+//         time : O(2n + k + l) space : O(2n+2m) k,l --> size of both maps m--> size of the list and string array
+
+//Approach : split the array into words array and then stores the words in hashMap as keys with value 0 : if occurrs once and -1: if occurs more than once
+//           then check for whether they are unique and occurrs only in one of the array and stores it in a list
+class Solution {
+    public String[] uncommonFromSentences(String s1, String s2) {
+        String[] str1 = s1.split(" ");
+        String[] str2 = s2.split(" ");
+        HashMap<String, Integer> map1 = new HashMap<>();
+        HashMap<String, Integer> map2 = new HashMap<>();
+        List<String> ans = new ArrayList<>();
+        for(String s : str1){
+            if(!map1.containsKey(s)){
+                map1.put(s,0);
+            }
+            else{
+                map1.put(s,-1);
+            }
+        }
+        for(String s : str2){
+            if(!map2.containsKey(s)){
+                map2.put(s,0);
+            }
+            else{
+                map2.put(s,-1);
+            }
+        }
+        for(Map.Entry<String, Integer> en : map1.entrySet()){
+            if(!map2.containsKey(en.getKey()) && en.getValue() == 0){
+                ans.add(en.getKey());
+            }
+        }
+        for(Map.Entry<String, Integer> en : map2.entrySet()){
+            if(!map1.containsKey(en.getKey()) && en.getValue() == 0){
+                ans.add(en.getKey());
+            }
+        }
+        String[] str = new String[ans.size()];
+        for(int i = 0; i < ans.size(); i++){
+            str[i] = ans.get(i);
+        }
+        return str;
+    }
+}
+
+//Ques 2 : (link--> https://leetcode.com/problems/number-of-zero-filled-subarrays/)
+//         time : O(n) space : O(1)
+class Solution {
+    public long zeroFilledSubarray(int[] nums) {
+        int j = -1;
+        long count = 0;
+        long ans = 0;
+        while(j < nums.length-1){
+            while(j < nums.length-1 && nums[j+1] == 0){
+                count++;
+                j++;
+            }
+            if(count != 0) ans += (count * (count+1))/2;
+            count = 0;
+            j++;
+        }
+        return ans;
+    }
+}
+
+//Ques 3 : (link--> https://leetcode.com/problems/shifting-letters-ii/)
+//         time : O(n) space : O(n)
+class Solution {
+    public String shiftingLetters(String s, int[][] shifts) {
+        char[] str = s.toCharArray();//create a character array
+        int[] diff = new int[str.length+1];//create an auxillary diff array
+        //in this store like dif[shift[i][0]]++ and dif[shift[i][1]+1]-- if increament and opposite in case of decrement
+         for(int i = 0; i < shifts.length; i++){
+            if(shifts[i][2] == 1){
+                diff[shifts[i][0]]++;
+                diff[shifts[i][1]+1]--;
+            }
+            else{
+                diff[shifts[i][0]]--;
+                diff[shifts[i][1]+1]++;
+            }
+        }
+        // creates the prefix sum like we have the exact decrement and increment of the particular char of the string
+        for(int i = 1; i < diff.length; i++){
+            diff[i] += diff[i-1];
+        }
+        // then use these shifts to calculate the final char at the place of the old one
+        for(int i = 0; i < diff.length-1; i++){
+            if(diff[i] > 0) str[i] = (char)('a'+(str[i]-'a'+diff[i])%26);
+            else if(diff[i] < 0) str[i] = (char)('z'-('z'-str[i]-diff[i])%26);
+        }
+        String st = String.valueOf(str);
+        return st;
+    }
+}
