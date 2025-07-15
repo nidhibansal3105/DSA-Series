@@ -1,0 +1,64 @@
+//Ques 1 : (link--> https://leetcode.com/problems/optimal-partition-of-string/)
+//         time : O(n)  space : O(1)
+
+//Approach : just increase the count whenever you encounter the duplicated element also change the substring and makes the array filled with 0 again but remember to count the charachter everytime
+class Solution {
+    public int partitionString(String s) {
+        int[] count = new int[26];
+        int j = 0;
+        int min = 1;
+        while(j < s.length()){
+            if(count[s.charAt(j)-'a'] > 0){
+                min++;
+                Arrays.fill(count, 0);
+            }
+            count[s.charAt(j)-'a']++;
+            j++;
+        }
+        return min;
+    }
+}
+
+//Ques 2 : (link--> https://leetcode.com/problems/word-subsets/)
+//         time : O(2n+m)  space : O(n)
+
+//Approach : make an ausx array to store the no. of letters a string is required to have to be added in the list of ans.
+//           for that store the freq of letters from words2 like the given manner 
+//           compare string by string of words1 
+class Solution {
+    public List<String> wordSubsets(String[] words1, String[] words2) {
+        int[][] freq1 = new int[words1.length][26];//O(n)
+        int[] freq2 = new int[26];
+        List<String> ans = new ArrayList<>();
+        int i = 0;
+        for(String str : words1){//O(n)
+            for(char ch : words1[i].toCharArray()){
+                freq1[i][ch-'a']++;
+            }
+            i++;
+        }
+        for(String str : words2){//O(m)
+            int[] aux = new int[26];
+            for(char ch : str.toCharArray()){
+                aux[ch-'a']++;
+            }
+            for(int k = 0; k < 26; k++){
+                if(aux[k] != 0) freq2[k] = Math.max(freq2[k], aux[k]);
+            }
+        }
+        for(int j = 0; j < freq1.length; j++){//O(n)
+            boolean flag = true;
+            for(int k = 0; k < 26; k++){
+                if(freq2[k] != 0){
+                    if(freq1[j][k] < freq2[k]){
+                        flag = false;
+                        break;
+                    }
+                }
+            }
+            if(flag) ans.add(words1[j]);
+        }
+        return ans;
+    }
+}
+
