@@ -1,0 +1,47 @@
+//Ques 1 : (link--> https://leetcode.com/problems/minimum-penalty-for-a-shop/)
+//         time : O(n)  space : O(1)
+
+//Approach : simply calculate the no. of 'Y' then iterate a loop through the string and then calculte the possible penalties and find the minimum ones
+class Solution {
+    public int bestClosingTime(String customers) {
+        int penalty = 0;
+        for(char ch : customers.toCharArray()){
+            if(ch == 'Y') penalty++;
+        }
+        int ans = 0;
+        int min = penalty;
+        for(int i = 0; i < customers.length(); i++){
+            char ch = customers.charAt(i);
+            if(ch == 'Y') penalty--;
+            else penalty++;
+            if(penalty < min){
+                ans = i+1;
+                min = penalty;
+            }
+        }
+        return ans;
+    }
+}
+
+//Ques 2 : (link--> https://leetcode.com/problems/sum-of-absolute-differences-in-a-sorted-array/)
+//         time : O(n)  spacee : O(n)
+
+//Approach : make an aux array for prefix sum in which ith index points to the sum of elements until index i (excluding nums[i])
+//           using this you can divide the array in two portions for any index then remove that nums[i] accordingly from both the portion
+//           add them to get the ans
+class Solution {
+    public int[] getSumAbsoluteDifferences(int[] nums) {
+        int n = nums.length;
+        int[] sum = new int[n];
+        int total = 0;
+        for(int i = 1; i < n; i++){
+            sum[i] = sum[i-1]+nums[i-1];
+        }
+        total = sum[n-1]+nums[n-1];
+        for(int i = 0; i < n; i++){
+            sum[i] = ((nums[i]*i) - sum[i]) + ((total-nums[i]-sum[i])-(nums[i]*(n-i-1)));
+        }
+        return sum;
+    }
+}
+
