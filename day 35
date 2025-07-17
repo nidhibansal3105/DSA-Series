@@ -1,0 +1,61 @@
+//Ques 1 :(link--> https://leetcode.com/problems/maximum-difference-between-even-and-odd-frequency-i/)
+//        time : O(n) space : O(1)
+
+class Solution {
+    public int maxDifference(String s) {
+        int[] freq = new int[26];
+        for(char ch : s.toCharArray()){
+            freq[ch-'a']++;
+        }
+        int even = s.length();
+        int odd = 0;
+        for(int i : freq){
+            if(i != 0 && i%2 == 0){
+                even = Math.min(even, i);
+            }
+            else{
+                odd = Math.max(odd, i);
+            }
+        }
+        return odd-even;
+    }
+}
+
+//Ques 2 : (link--> https://leetcode.com/problems/find-lucky-integer-in-an-array/description/)
+//         time : O(n)  space : O(n)
+
+class Solution {
+    public int findLucky(int[] arr) {
+        int[] count = new int[501];
+        int ans = 0;
+        for(int i : arr){
+            count[i]++;
+        }
+        for(int i = 0; i < count.length; i++){
+            if(count[i] != 0 && count[i] == i){
+                ans = i;
+            }
+        }
+        if(ans == 0) ans = -1;
+        return ans;
+    }
+}
+
+//Ques 3 : (link--> https://leetcode.com/problems/max-consecutive-ones/)
+//         time : O(n) space : O(1)
+
+class Solution {
+    public int findMaxConsecutiveOnes(int[] nums) {
+        int count = 0;
+        int max = 0;
+        for(int i : nums){
+            if(i == 1) count++;
+            else{
+                max = Math.max(max,count);
+                count = 0;
+            }
+        }
+        max = Math.max(max,count);
+        return max;
+    }
+}
