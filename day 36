@@ -1,0 +1,62 @@
+//Ques 1 : (link--> https://leetcode.com/problems/convert-an-array-into-a-2d-array-with-conditions/)
+//         time : O(n) space : O(n)
+
+// Approach : Make a freq array of array's length as given the nums[i] <= nums.length
+//            Find out the max freq also while performing above task
+//            Then iterate the count array and on a given iteration just add it continuously down the list until it become 0 so that the same elemnet doesn't repeat in the same list
+class Solution {
+    public List<List<Integer>> findMatrix(int[] nums) {
+        int[] count = new int[nums.length + 1];
+        List<List<Integer>> ans = new ArrayList<>();
+        int max = 0;
+        for(int i : nums){
+            count[i]++;
+            max = Math.max(count[i],max);
+        }
+        for(int i = 0; i < max; i++){
+            List<Integer> l = new ArrayList<>();
+            ans.add(l);
+        }
+        for(int i = 0; i < count.length; i++){
+            int j = 0;
+            while(count[i]-- != 0){
+                ans.get(j++).add(i);
+            }
+        }
+        return ans;
+    }
+}
+
+//Ques 2 : (link--> https://leetcode.com/problems/minimum-number-of-operations-to-make-array-empty/)
+//         time : O(nlogn) space : O(1)
+
+
+class Solution {
+    public int minOperations(int[] nums) {
+        Arrays.sort(nums);
+        int i = 1;
+        int count = 1;
+        int ans = 0;
+        while(i <= nums.length){
+            if(i != nums.length && nums[i-1] == nums[i]){
+                count++;
+            }
+            else{
+                while(count > 0){
+                    if(count%3 == 0){
+                        ans += count/3;
+                        count = count%3;
+                        break;
+                    }
+                    count -= 2;
+                    ans++;
+                }
+                if(count < 0) return -1;
+                count = 1;
+            }
+            i++;
+        }
+
+        return ans;
+    }
+}
