@@ -30,7 +30,9 @@ class Solution {
 //Ques 2 : (link--> https://leetcode.com/problems/minimum-number-of-operations-to-make-array-empty/)
 //         time : O(nlogn) space : O(1)
 
-
+// Approach : Sort the array
+//            iterate through it then check it using the loop in the solution to check as well to get the min no. of operation
+//            operations will be min if no of triplets is considered first
 class Solution {
     public int minOperations(int[] nums) {
         Arrays.sort(nums);
