@@ -1,0 +1,57 @@
+//Ques 1 : (link--> https://leetcode.com/problems/divide-array-into-arrays-with-max-difference/)
+//         time : O(nlogn)  space : O(n)
+
+//Approach : simply sort the arrays that's way you could get the minimum difference and then if its not possible then nothing will work
+class Solution {
+    public int[][] divideArray(int[] nums, int k) {
+        int[][] arr = new int[nums.length/3][3];
+        Arrays.sort(nums);
+        int j = -1;
+        int l = -1;
+        for(int i = 0; i < nums.length; i++){
+            if(i%3 == 0){
+                j++;
+                l = 0;
+            }
+            arr[j][l] = nums[i];
+            l++;
+        }
+        //check whether its a good array or not you no need to check every element you just have to check the diff between the last and forst of the ans array
+        for(int i = 0; i < arr.length; i++){
+            if(arr[i][2] - arr[i][0] > k) return new int[0][0];
+        }
+        return arr;
+    }
+}
+
+//Ques 2 : (link--> https://leetcode.com/problems/sequential-digits/)
+//         time : O(1) space : O(1)
+
+//Approach : just make a string you have to return the order-wise permutations 
+class Solution {
+    public static int countDigits(int n){
+        int count = 0;
+        while(n > 0){
+            count++;
+            n /= 10;
+        }
+        return count;
+    }
+    public List<Integer> sequentialDigits(int low, int high) {
+        String str = "123456789";
+        List<Integer> list = new ArrayList<>();
+        for(int i = countDigits(low); i <= countDigits(high); i++){
+            int k = 0;
+            int j = i;
+            while(j <= str.length()){
+                int n = Integer.valueOf(str.substring(k,j));
+                if(n >= low && n <= high){
+                    list.add(n);
+                }
+                j++;
+                k++;
+            }
+        }
+        return list;
+    }
+}
