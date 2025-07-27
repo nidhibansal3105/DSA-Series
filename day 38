@@ -1,0 +1,102 @@
+//Ques 1 : (link--> https://leetcode.com/problems/ransom-note/)
+//         time : O(1) space : O(1)
+
+// Approach : simple count array
+class Solution {
+    public boolean canConstruct(String ransomNote, String magazine) {
+        int[] count1 = new int[26];
+        int[] count2 = new int[26];
+
+        for(char ch : ransomNote.toCharArray()){
+            count1[ch-'a']++;
+        }
+        for(char ch : magazine.toCharArray()){
+            count2[ch-'a']++;
+        }
+
+        for(int i = 0; i < count1.length; i++){
+            if(count1[i] > count2[i]) return false;
+        }
+        return true;
+    }
+}
+
+//Ques 2 : (link--> https://leetcode.com/problems/sort-characters-by-frequency/)
+//         time : O(n + klogk) space : O(n+k)
+
+//Approach : sorting using priority queue
+//''''''take care that you don't confuse your priority queue with the duplicates inputs'''''''
+class Solution {
+    public String frequencySort(String s) {
+        HashMap<Character, Integer> freq = new HashMap<>();
+        for(char ch : s.toCharArray()){
+            freq.put(ch, freq.getOrDefault(ch,0)+1);
+        }
+        PriorityQueue<Character> qt = new PriorityQueue<>((a,b) -> {//O(klogk)
+            if(freq.get(b) == freq.get(a)) return (int)b - (int)a;
+            else return freq.get(b) - freq.get(a);
+        });
+        for(char ch : freq.keySet()){
+            qt.offer(ch);
+        }
+        StringBuilder ans = new StringBuilder();
+        while(!qt.isEmpty()){
+            char ch = qt.poll();
+            for(int j = 0; j < freq.get(ch); j++){
+                ans.append(ch);
+            }
+        }
+        return ans.toString();
+    }
+}
+
+//Ques 3 : (link--> https://leetcode.com/problems/find-polygon-with-the-largest-perimeter/submissions/1710984628/)
+//         time : O(nlogn)  space : O(1)
+
+//Approach : simply sort the array then continue from last testing from last whether till that index can be our ans for the problem as at last we need to find the max perimeter
+class Solution {
+    public long largestPerimeter(int[] nums) {
+        Arrays.sort(nums);
+        long sum = 0;
+        for(int i = 0; i < nums.length; i++){
+            sum += nums[i];
+        }
+        for(int i = nums.length-1; i >= 2; i--){
+            sum -= nums[i];
+            if(nums[i] < sum) return sum+nums[i];
+        }
+        return -1;
+    }
+}
+
+// Ques 4 : (link--> https://leetcode.com/problems/minimum-remove-to-make-valid-parentheses/)
+//          time : O(n) space : O(n)
+
+// Approach : keep stack to keep the track of '(' and pop it every time you encounter ')' and if you encounter ')' even if the size of stack is 0 then store the index in the hashMap and this way at the end 
+//            you are left with certain indexes in the stack and certain in the map store the stack ones in the map and store every character of the string in the new string if that index is not in the map
+class Solution {
+    public String minRemoveToMakeValid(String s) {
+        Stack<Integer> st = new Stack<>();
+        HashSet<Integer> map = new HashSet<>();
+        for(int i = 0; i < s.length(); i++){
+            char ch = s.charAt(i);
+            if(ch == ')' && st.size() >= 1){
+                st.pop();
+            }
+            else if(ch == ')'){
+                map.add(i);
+            }
+            else if(ch == '('){
+                st.push(i);
+            }
+        } 
+        while(!st.isEmpty()){
+            map.add(st.pop());
+        }
+        StringBuilder str = new StringBuilder();
+        for(int i = 0; i < s.length(); i++){
+            if(!map.contains(i)) str.append(s.charAt(i));
+        }
+        return str.toString();
+    }
+}
