@@ -1,0 +1,106 @@
+//Ques 1 : (link--> https://leetcode.com/problems/sort-the-jumbled-numbers/)
+
+
+//Approach : Priority Queue
+//           time : O(n*k + nlogn) space : O(n)
+class Solution {
+    public static int decode(int n, int[]map){
+        if(n == 0) return map[0];
+        int s = 0;
+        int count = 0;
+        while(n > 0){
+            s = map[n%10]*(int)(Math.pow(10,count)) + s;
+            n /= 10;
+            count++;
+        }
+        return s;
+    }
+    public int[] sortJumbled(int[] mapping, int[] nums) {
+        int[] decoded = new int[nums.length];
+        for(int i = 0; i < nums.length; i++){//O(n*k)
+            decoded[i] = decode(nums[i], mapping);
+        }
+        PriorityQueue<Integer> qt = new PriorityQueue<>((a,b) -> {
+            if(decoded[a] == decoded[b]) return a-b;
+            else return decoded[a]-decoded[b];
+        });
+        for(int i = 0; i < nums.length; i++){//O(nlogn)
+            qt.offer(i);
+        }
+        int i = 0;
+        int[] ans = new int[nums.length];
+        while(!qt.isEmpty()){
+            int idx = qt.poll();//O(nlogn)
+            ans[i] = nums[idx];
+            i++;
+        }
+        return ans;
+    }
+}
+
+//Approach : using Arrays.sort
+//           time : O(n*k + nlogn) space : O(n)
+class Solution {
+    class Pair{
+        int num;
+        int decode;
+        public Pair(int num, int decode){
+            this.num = num;
+            this.decode = decode;
+        }
+    }
+
+    public static int decoded(int n, int[]map){
+        if(n == 0) return map[0];
+        int s = 0;
+        int count = 0;
+        while(n > 0){
+            s = map[n%10]*(int)(Math.pow(10,count)) + s;
+            n /= 10;
+            count++;
+        }
+        return s;
+    }
+    public int[] sortJumbled(int[] mapping, int[] nums) {
+        int n = nums.length;
+        int[] decoded = new int[n];
+        int[] ans = new int[n];
+        Pair[] arr = new Pair[n];
+        for(int i = 0; i < n; i++){
+            arr[i] = new Pair(nums[i], decoded(nums[i], mapping));
+        }
+        Arrays.sort(arr, (a,b) -> {
+            if(a.decode == b.decode) return 0;
+            return a.decode - b.decode;
+        });
+        for(int i = 0; i < decoded.length; i++){
+            ans[i] = arr[i].num;
+        }
+        return ans;
+    }
+}
+
+//Ques 2 : (link--> https://leetcode.com/problems/contiguous-array/submissions/1718048708/)
+//         time : O(n)  space : O(n)
+
+//Approach : simply claculate the difference of no.of zeroes and ones till the index i using two aux vars one zero counter and another one counter
+//           check whether the difference occurrs t earlier or no if yes then you are assured that taking the in-between subarray.
+//           Just stores the length using the index refference
+class Solution {
+    public int findMaxLength(int[] nums) {
+        int countZ = 0;
+        int countO = 0;
+        HashMap<Integer, Integer> diff = new HashMap<>();
+        int max = 0;
+        diff.put(0,-1);
+        for(int i = 0; i < nums.length; i++){
+            if(nums[i] == 0) countZ++;
+            else countO++;
+            if(diff.containsKey(countZ-countO)){
+                max = Math.max(max, i-diff.get(countZ-countO));
+            }
+            else diff.put(countZ-countO, i);
+        }
+        return max;
+    }
+}
