@@ -1,0 +1,88 @@
+//Ques 1 :(link--> https://leetcode.com/problems/find-the-length-of-the-longest-common-prefix/)
+//        time : O(n*m) space : O(n)
+
+//Appraoch : Simply store all the prefixes of the arr1 in hashset then similarly check all the prefixes of arr2 and every time keep the track of max length
+class Solution {
+    public static HashSet<Integer> prefix(int[] num){
+        HashSet<Integer> set = new HashSet<>();
+        for(int n : num){
+            while(n > 0){
+                set.add(n);
+                n /= 10;
+            }
+        }
+        return set;
+    }
+    public static int digits(int n) {
+        if (n == 0) return 1;
+        return (int)Math.floor(Math.log10(n) + 1);
+    }
+
+    public int longestCommonPrefix(int[] arr1, int[] arr2) {
+        HashSet<Integer> firstSet = prefix(arr1);//O(n*m)
+        int ans = 0;
+        for(int n : arr2){//O(n)
+            while(n > 0){//O(m)
+                if(firstSet.contains(n)){
+                    ans = Math.max(ans, digits(n));
+                }
+                n /= 10;
+            }
+        }
+        return ans;
+    }
+}
+
+//Ques 2 : (link--> https://leetcode.com/contest/biweekly-contest-162/problems/minimum-removals-to-balance-array/)
+//         time: O(n*k + nlogn)  space :O(1)
+
+//Approach : sort the array keep the check for each subarray being balanced or not if yes then compare it with the maxBalLength till now then at last subtract it from the nums.length to get the no. of elements to be removed to make it balanced
+class Solution {
+    public int minRemoval(int[] nums, int k) {
+        Arrays.sort(nums);
+        if ((long)nums[0] * k >= nums[nums.length - 1])
+            return 0;
+        int maxBalLength = 1;
+        int j = 0;
+        for (int i = 0; i < nums.length; i++) {
+            while(j < nums.length && (long)nums[i] * k >= nums[j]) {
+                j++;
+            }
+            maxBalLength = Math.max(maxBalLength, j-i);
+        }
+        return nums.length - maxBalLength;
+    }
+}
+
+//Ques 3 : (link--> https://leetcode.com/contest/biweekly-contest-162/problems/earliest-finish-time-for-land-and-water-rides-i/description/)
+//         time : O(2*n + 2*m) space : O(1)
+
+//Approach : check individually for if each the rides were taken at first
+//           in a particular case claculate the minimum duration for the ride then by iterating through the other ride's array check for the min duration
+//           do the same for the second ride then return the minimum time
+class Solution {
+    public int earliestFinishTime(int[] landStartTime, int[] landDuration, int[] waterStartTime, int[] waterDuration) {
+        int aux = 0;
+        int ans = Integer.MAX_VALUE;
+        int minL = Integer.MAX_VALUE;
+        int minW = Integer.MAX_VALUE;
+        
+        for(int i = 0; i < landDuration.length; i++){
+            minL = Math.min(minL, landDuration[i]+landStartTime[i]);
+        }
+        for(int i = 0; i < waterDuration.length; i++){
+            minW = Math.min(minW, waterDuration[i]+waterStartTime[i]);
+        }
+        
+        aux = minL;
+        for(int j = 0; j < waterDuration.length; j++){
+            ans = Math.min(ans, Math.max(aux, waterStartTime[j])+waterDuration[j]);
+        }
+
+        aux = minW;
+        for(int j = 0; j < landDuration.length; j++){
+            ans = Math.min(ans, Math.max(aux, landStartTime[j])+landDuration[j]);
+        }
+        return ans;
+    }
+}
