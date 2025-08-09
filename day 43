@@ -1,0 +1,58 @@
+//Ques 1 : (link--> https://leetcode.com/problems/text-justification/)
+//         time : O(n) space : O(n)
+
+//Approach : iterate through the words array store the words in the queue after checking either wordsLength exeedes the maxLength or space is less than the count{the mo. of words till now-1} after adding that word
+//if that happens wrap it up and make up a string to be stored in the ans list but calculation of space to be put in needs calculation so after that also remembers to put up the last set also in the ans list if any present
+class Solution {
+    public List<String> fullJustify(String[] words, int maxWidth) {
+        List<String> ans = new ArrayList<>();
+        Queue<String> qt = new LinkedList<>();
+        int wordLength = 0;
+        int count = -1;
+        int space = 0;
+        for(int i = 0; i < words.length; i++){
+            wordLength += words[i].length();
+            count++;
+            space = maxWidth-wordLength;
+            if(count != 0 && (wordLength >= maxWidth || space == 0 || space < count)){
+                StringBuilder str = new StringBuilder();
+                count--;
+                space += words[i].length();
+                int exS = 0;
+                if(count != 0){
+                    exS = space%count;
+                    space /= count;
+                }
+                while(!qt.isEmpty()){//O(k)
+                    str.append(qt.poll());
+                    int j = 0;
+                    while(str.length() < maxWidth && j < space){
+                        str.append(" ");
+                        j++;
+                    }
+                    if(exS > 0 && str.length() < maxWidth){ 
+                        str.append(" ");
+                        exS--;
+                    }
+                }
+                ans.add(str.toString());
+                wordLength = words[i].length();
+                count = 0;
+                space = maxWidth-wordLength;
+            }
+            qt.add(words[i]);
+        }
+        StringBuilder str = new StringBuilder();
+        while(!qt.isEmpty()){
+            str.append(qt.poll());
+            if(str.length() < maxWidth) str.append(" ");
+        }
+        int j = 0;
+        while(str.length() < maxWidth && j < space){
+            str.append(" ");
+            j++;
+        }
+        ans.add(str.toString());
+        return ans;
+    }
+}
