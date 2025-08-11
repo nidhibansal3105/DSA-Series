@@ -1,0 +1,49 @@
+//Ques 1 : (link--> https://leetcode.com/problems/naming-a-company/)
+//         time : O(n) space : O(n)
+
+//Approach : in brute force you can use the double forloop but you can't reduce that instead you can reduce the iteratiion by storing the given array in different way
+class Solution {
+    public long distinctNames(String[] ideas) {
+        HashSet<String>[] suffixes = new HashSet[26];
+        for(int i = 0; i < 26; i++){
+            suffixes[i] = new HashSet<>();
+        }
+        for(String str : ideas){
+            suffixes[str.charAt(0)-'a'].add(str.substring(1));
+        }
+        long ans = 0;
+        for(int i = 0; i < 25; i++){
+            if(suffixes[i].size() > 0){
+                for(int j = i+1; j < 26; j++){
+                    int count = 0;
+                    for(String str : suffixes[i]){
+                        if(suffixes[j].contains(str)){
+                            count++;
+                        }
+                    }
+                    ans += 2*(suffixes[i].size()-count)*(suffixes[j].size()-count);
+                }
+            }
+        }
+        return ans;
+    }
+}
+
+//Ques 2 : (lin--> https://leetcode.com/problems/first-missing-positive/)
+//         tiem : O(n) space : O(n)
+
+//Approach: fill all the elements in the hashSet then check which no. is missing from 1 to max if they all present then return max+1;
+class Solution {
+    public int firstMissingPositive(int[] nums) {
+        HashSet<Long> set = new HashSet<>();
+        long max = 0;
+        for(int i : nums){
+            set.add((long)i);
+            max = Math.max(max, i);
+        }
+        for(long i = 1; i < max; i++){
+            if(!set.contains(i)) return (int)(i);
+        }
+        return (int)(max+1);
+    }
+}
