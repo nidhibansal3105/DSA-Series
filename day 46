@@ -1,0 +1,18 @@
+//Ques 1: (link--> https://leetcode.com/problems/reverse-string/)
+//        time: O(n) space : O(1)
+
+//Approach : two-pointer
+class Solution {
+    public void reverseString(char[] s) {
+        int i = 0;
+        int j = s.length-1;
+        char temp;
+        while(i < j){
+            temp = s[i];
+            s[i] = s[j];
+            s[j] = temp;
+            i++;
+            j--;
+        }
+    }
+}
