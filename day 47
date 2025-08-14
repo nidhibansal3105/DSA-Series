@@ -1,0 +1,98 @@
+//Ques 1 : (link--> https://leetcode.com/problems/valid-palindrome/)
+//         time : O(n) space :O(k)
+
+//Approach : create a string out of the given string containing only alphanumeric charcters then check usong two pointers wether the given string is palindrome or not
+class Solution {
+    public boolean isPalindrome(String s) {
+        if(s.trim() == "") return true;
+        StringBuilder ans = new StringBuilder();
+        for(int i = 0; i < s.length(); i++){
+            char ch = s.charAt(i);
+            if(ch >= 'A' && ch <= 'Z'){
+                ans.append((char)(ch+32));
+            }
+            else if(ch >= 'a' && ch <= 'z' || ch >= '0' && ch <= '9'){
+                ans.append(ch);
+            }
+        }
+        String answer = ans.toString();
+        int i = 0;
+        int j = answer.length()-1;
+        while(i < j){
+            if(answer.charAt(i) != answer.charAt(j)) return false;
+            i++;
+            j--;
+        }
+        return true;
+    }
+}
+
+//Ques 2 : (link--> https://leetcode.com/problems/valid-palindrome-ii/)
+//         time : O(n)  space : O(1)
+
+//Approach : check until mismach happens then divide the remaining substring into two strings then check whether any of them is palindromic or not if it is return true if not return false
+class Solution {
+    public boolean validSubPalindrome(String str){
+        int i = 0;
+        int j = str.length()-2;
+        boolean flag = true;
+        while(i < j){
+            if(str.charAt(i) != str.charAt(j)){
+                flag = false;
+                break;
+            }
+            i++;
+            j--;
+        }
+        if(!flag){
+            i = 1;
+            j = str.length()-1;
+            while(i < j){
+                if(str.charAt(i) != str.charAt(j)){
+                    return false;
+                }
+                i++;
+                j--;
+            }
+        }
+        return true;
+    }
+    public boolean validPalindrome(String s) {
+        int i = 0;
+        int j = s.length()-1;
+        while(i < j){
+            if(s.charAt(i) == s.charAt(j)){
+                i++;
+                j--;
+            }
+            else{
+                break;
+            }
+        }
+        return validSubPalindrome(s.substring(i,j+1));
+    }
+}
+
+
+//Ques 3 : (link--> https://leetcode.com/problems/merge-strings-alternately/submissions/1734581657/)
+//         time : O(n) sapce : (1)
+
+//Approach : just apply the logic of merging two arrays 
+class Solution {
+    public String mergeAlternately(String word1, String word2) {
+        int i = 0;
+        StringBuilder ans = new StringBuilder();
+        while(i < word1.length() && i < word2.length()){
+            ans.append(word1.charAt(i));
+            ans.append(word2.charAt(i));
+            i++;
+        }
+        if(i < word1.length()){
+            ans.append(word1.substring(i));
+        }
+        if(i < word2.length()){
+            ans.append(word2.substring(i));
+        }
+        return ans.toString();
+    }
+}
