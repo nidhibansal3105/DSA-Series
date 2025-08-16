@@ -1,0 +1,43 @@
+//Ques 1 : (link--> https://leetcode.com/problems/remove-duplicates-from-sorted-array/description/)
+//         time : O(n) space : O(n)
+
+//Approach : simply makes a duplicate of nums then iterate through it then you can check the no. of unique elements and store it iteration by iteration in the nums
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        int[] ans = nums;
+        int count = 1;
+        for(int i = 1; i < nums.length; i++){
+            if(ans[i] != ans[i-1]){
+                count++;
+                nums[count-1] = ans[i]; 
+            }
+        }
+        return count;
+    }
+}
+
+//Ques 2 : (link--> https://leetcode.com/problems/maximum-69-number/?envType=daily-question&envId=2025-08-16)
+//         time : O(n) space : O(n)
+
+//Approach : convert the number into array and then convert the first 6 to 9 and then again convert it back to number from array
+class Solution {
+    public int maximum69Number (int num) {
+        int[] arr = new int[(int)(Math.log(num))+1];
+        int dummy = num;
+        for(int i = arr.length-1; i >= 0; i--){
+            arr[i] = dummy%10;
+            dummy = dummy/10;
+        }
+        for(int i = 0; i < arr.length; i++){
+            if(arr[i] == 6){
+                arr[i] = 9;
+                break;
+            }
+        }
+        dummy = 0;
+        for(int i = 0; i < arr.length; i++){
+            dummy = dummy*10 + arr[i];
+        }
+        return dummy;
+    }
+}
