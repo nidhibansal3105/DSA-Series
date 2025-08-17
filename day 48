@@ -70,7 +70,7 @@ class Solution {
 //Ques 3 : (link--> https://leetcode.com/problems/move-zeroes/)
 //         time : O(n) space : O(1)
 
-//Approach : keep the track of no. of non-zero elements and then keep them in front of the array nums itself
+//Approach : keep the track of no. of non-zero elements and then keep them in front of the array nums itself"
 class Solution {
     public void moveZeroes(int[] nums) {
         int count = 0;
