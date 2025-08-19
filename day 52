@@ -1,0 +1,50 @@
+//Ques 1 : (link--> https://leetcode.com/problems/reverse-words-in-a-string-iii/)
+//         time : O((no. words) * (length of each word))  space : O(n)
+
+//Approach : split the String into the  words array then everse them by converting them into the stringBuilder
+class Solution {
+    public String reverseWords(String s) {
+        String[] words = s.split(" ");
+        StringBuilder s1 = new StringBuilder();
+        int count = 0;
+        for(String word : words){
+            count++;
+            s1.append(new StringBuilder(word).reverse());
+            if(count < words.length) s1.append(" ");
+        }
+        return s1.toString();
+    }
+}
+
+//Ques 2 : (link--> https://leetcode.com/problems/backspace-string-compare/)
+//          time : O(n+m)  space : O(n+m)
+
+//Approach : visualise it like a stack instead use simple stack and miss the iterations based on the counts of the '#'
+class Solution {
+    public boolean backspaceCompare(String s, String t) {
+        int i = s.length()-1;
+        int count = 0;
+        StringBuilder s1 = new StringBuilder();
+        while(i >= 0){
+            if(s.charAt(i) == '#') count++;
+            else{
+                if(count > 0) count--;
+                else s1.insert(0, s.charAt(i));
+            }
+            i--;
+        }
+        i = t.length()-1;
+        count = 0;
+        StringBuilder s2 = new StringBuilder();
+        while(i >= 0){
+            if(t.charAt(i) == '#') count++;
+            else{
+                if(count > 0) count--;
+                else s2.insert(0, t.charAt(i));
+            }
+            i--;
+        }
+        if(s1.toString().equals(s2.toString()))return true;
+        return false;
+    }
+}
