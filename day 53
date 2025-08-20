@@ -1,0 +1,90 @@
+//Ques 1 : (link--> https://leetcode.com/problems/check-if-two-string-arrays-are-equivalent/)
+//         time : O(n+m) space : O(n+m)
+
+// Approach : simply use StringBuilder equals method
+class Solution {
+    public boolean arrayStringsAreEqual(String[] word1, String[] word2) {
+        StringBuilder s1 = new StringBuilder();
+        StringBuilder s2 = new StringBuilder();
+        for(String word : word1){
+            s1.append(word);
+        }
+        for(String word : word2){
+            s2.append(word);
+        }
+        return s1.toString().equals(s2.toString());
+    }
+}
+
+//Ques 2 : (link--> https://leetcode.com/problems/apply-operations-to-an-array/)
+//         time : O(n)  space : O(1)
+
+//Approach : simple loop iteration and then moving all the zeroes to the end
+class Solution {
+    public int[] applyOperations(int[] nums) {
+        for(int i = 0; i < nums.length-1; i++){
+            if(nums[i] == nums[i+1]){
+                nums[i] *= 2;
+                nums[i+1] = 0;
+            }
+        }
+        int count = 0;
+        int temp;
+        for(int i = 0; i < nums.length; i++){
+            if(nums[i] != 0){
+                temp = nums[count];
+                nums[count] = nums[i];
+                nums[i] = temp;
+                count++;
+            }
+        }
+        return nums;
+    }
+}
+
+//Ques 3 : (link--> https://leetcode.com/problems/adding-spaces-to-a-string/)
+//         time : O(n)  space : O(n)
+
+//Approach : just at the space(i)th index add space before appending the character
+class Solution {
+    public String addSpaces(String s, int[] spaces) {
+        int j = 0;
+        StringBuilder s1 = new StringBuilder();
+        for(int i = 0; i < s.length(); i++){
+            if(j < spaces.length && i == spaces[j]){
+                s1.append(" ");
+                j++;
+            }
+            s1.append(s.charAt(i));
+        }
+        return s1.toString();
+    }
+}
+
+//Ques 4 : (link--> https://leetcode.com/problems/string-compression/)
+//         time : O(n+m)    space :O(m)
+
+//Approach : just append the char then check whether the i-th == (i-1)-th 
+class Solution {
+    public int compress(char[] chars) {
+        int count = 1;
+        StringBuilder s1 = new StringBuilder();
+        s1.append(chars[0]);
+        for(int i = 1; i < chars.length; i++){
+            if(chars[i] == chars[i-1]){
+                count++;
+            }
+            else{
+                if(count > 1) s1.append(count);
+                s1.append(chars[i]);
+                count = 1;
+            }
+        }
+        if(count > 1) s1.append(count);
+        String str = s1.toString();
+        for(int i = 0; i < str.length(); i++){
+            chars[i] = str.charAt(i);
+        }
+        return str.length();
+    }
+}
