@@ -1,0 +1,45 @@
+//Ques 1 : (link--> https://leetcode.com/problems/boats-to-save-people/)
+//         time :O(n) space : O(1)
+
+//Approach : sort the array then take two pointers from both the ends start checking whether they can form pair or not and sorting helps in creating such pairs faster
+lass Solution {
+    public int numRescueBoats(int[] people, int limit) {
+        Arrays.sort(people);
+        int noOfBoats = 0;
+        int sum = 0;
+        int left = 0;
+        int right = people.length-1;
+        while(left <= right){
+            if(people[left]+people[right] <= limit){
+                noOfBoats++;
+                left++;
+                right--;
+            }
+            else{
+                right--;
+                noOfBoats++;
+            }
+        }
+        return noOfBoats;
+    }
+}
+
+//Ques 2 : (link--> https://leetcode.com/problems/minimum-length-of-string-after-deleting-similar-ends/)
+//         time : O(n) space : O(1)
+
+//Approach : just iterate through the string then continuosly decrease the right and increase the left until the same charachter appears in the suffix and perfix correspondingly then at point where the prefix and suffix dosen't matches with each other break through the loop and then return right-left+1;
+class Solution {
+    public int minimumLength(String s) {
+        int left = 0;
+        int right = s.length()-1;
+        char[] chArray = s.toCharArray();
+        while(left < right && chArray[left] == chArray[right]){
+            while(left+1 < right && chArray[left+1] == chArray[left]) left++;
+            while(right-1 > left && chArray[right-1] == chArray[right]) right--;
+            left++;
+            right--;
+        }
+        if(left > right) return 0;
+        return right-left+1;
+    }
+}
