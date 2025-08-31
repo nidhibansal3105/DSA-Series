@@ -1,0 +1,49 @@
+//Ques 1 : (link--> https://leetcode.com/problems/k-th-symbol-in-grammar/)
+//         time :O(n) space : O(n)
+
+//Approach : use recurssion 
+class Solution {
+    public int kthGrammar(int n, int k) {
+        if(n == 1) return 0;
+        int parent = kthGrammar(n-1, (k+1)/2);
+        if((parent == 0 && k%2 == 0) || (parent == 1 && k%2 == 1)) return 1;
+        else return 0;
+    }
+}
+
+//Ques 2 : (link--> https://leetcode.com/problems/sentence-similarity-iii/)
+//         time : O(n) space :O(n)
+
+//Approach : store the string in words array then check from left then from right if left right pointers cross each other at the end return true
+class Solution {
+    public boolean areSentencesSimilar(String sentence1, String sentence2) {
+        String[] words1 = sentence1.split(" ");
+        String[] words2 = sentence2.split(" ");
+        int l1 = words1.length;
+        int l2 = words2.length;
+        int i = 0;
+        int j = l1 >= l2 ? l2: l1;
+        j--;
+        int l = 0;
+        int r = l1 <= l2 ? l2: l1;
+        r--;
+        while(i <= j && words1[i].equals(words2[i])){
+            i++;
+        }
+        if(i == j+1) return true;
+        if(l1 <= l2){
+            while(j >= 0 && words1[j].equals(words2[r])){
+                j--;
+                r--;
+            }
+        }
+        else{
+            while(j >= 0 && words2[j].equals(words1[r])){
+                j--;
+                r--;
+            }
+        }
+        if(j < i) return true;
+        return false;
+    }
+}
