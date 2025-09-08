@@ -87,7 +87,9 @@ class MyQueue {
 }
 
 //Ques 3 : (link--> https://leetcode.com/problems/final-prices-with-a-special-discount-in-a-shop/)
+//         time : O(n*n)  space : O(1)
 
+//Approach : simple iteration using nested loops
 class Solution {
     public int[] finalPrices(int[] prices) {
         int i = 0;
