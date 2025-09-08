@@ -1,0 +1,85 @@
+//Ques 1: (link--> https://leetcode.com/problems/crawler-log-folder/)
+//        tiem : O(n) space :O(1)
+
+//approach : just simple pointers approach
+class Solution {
+    public int minOperations(String[] logs) {
+        int ans = 0;
+        for(String i : logs){
+            if(i.equals("../") && ans > 0){
+                ans--;
+            }
+            else if(i.equals("./") || (i.equals("../") && ans == 0)){
+                continue;
+            }
+            else{
+                ans++;
+            }
+        }
+        return ans;
+    }
+}
+
+//Ques 2 :(link--> https://leetcode.com/problems/baseball-game/)
+//         time : O(n)  space : O(<n)
+
+//Approach : use stack to implement operations
+class Solution {
+    public int calPoints(String[] operations) {
+        int n = operations.length;
+        int ans = 0;
+        Stack<Integer> st = new Stack<>();
+        for(String i : operations){
+            if(i.equals("D")){
+                st.push(st.peek()*2);
+            }
+            else if(i.equals("C")){
+                st.pop();
+            }
+            else if(i.equals("+")){
+                int num1 = st.pop();
+                int num2 = st.pop();
+                st.push(num2);
+                st.push(num1);
+                st.push(num2+num1);
+            }
+            else{
+                st.push(Integer.parseInt(i));
+            }
+        }
+        while(!st.isEmpty()){
+            ans += st.pop();
+        }
+        return ans;
+    }
+}
+
+//Aues 3 : (link--> https://leetcode.com/problems/valid-parentheses/)
+//         time : O(n)  space :O(n)
+
+//Approach : put the open ones in the stack and when the close one arrived just pop out the top if it matches otherwise on the spot return false 
+class Solution {
+    public boolean isValid(String s) {
+        Stack<Character> stack = new Stack<>();
+        for (char ch : s.toCharArray()) {
+            if (ch == '(' || ch == '[' || ch == '{') {
+                stack.push(ch);
+            } else {
+                if (stack.isEmpty()) {
+                    return false;
+                }
+                char top = stack.pop();
+                if (ch == ')' && top != '(') {
+                    return false;
+                }
+                if (ch == ']' && top != '[') {
+                    return false;
+                }
+                if (ch == '}' && top != '{') {
+                    return false;
+                }
+            }
+        }
+        return stack.isEmpty();
+    }
+}
