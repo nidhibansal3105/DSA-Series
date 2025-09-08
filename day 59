@@ -1,0 +1,105 @@
+//Ques 1 : (link--> https://leetcode.com/problems/implement-stack-using-queues/)
+
+class MyStack {
+    Queue<Integer> qt1;
+    Queue<Integer> qt2;
+    public MyStack() {
+        qt1 = new LinkedList<>();
+        qt2 = new LinkedList<>();
+    }
+    
+    public void push(int x) {
+        if(!qt1.isEmpty() || (!qt1.isEmpty() && !qt2.isEmpty())) qt1.add(x);
+        else qt2.add(x);
+        return ;
+    }
+    
+    public int pop() {
+        while(qt1.size() > 1){
+            qt2.add(qt1.remove());
+        }
+        if(!qt1.isEmpty()) return qt1.remove();
+        while(qt2.size() > 1){
+            qt1.add(qt2.remove());
+        }
+        if(!qt2.isEmpty()) return qt2.remove();
+        return -1;
+    }
+    
+    public int top() {
+        while(qt1.size() > 1){
+            qt2.add(qt1.remove());
+        }
+        if(!qt1.isEmpty()){ 
+            qt2.add(qt1.peek());
+            return qt1.remove();
+        }
+        while(qt2.size() > 1){
+            qt1.add(qt2.remove());
+        }
+        if(!qt2.isEmpty()){ 
+            qt1.add(qt2.peek());
+            return qt2.remove();
+        }
+        return -1;
+    }
+    
+    public boolean empty() {
+        if(qt1.size() == 0 && qt2.size() == 0) return true;
+        return false;
+    }
+}
+
+//Ques 2 : (link--> https://leetcode.com/problems/implement-queue-using-stacks/)
+
+class MyQueue {
+    Stack<Integer> st1;
+    Stack<Integer> st2;
+    public MyQueue() {
+        st1 = new Stack<>();
+        st2 = new Stack<>();
+    }
+    
+    public void push(int x) {
+        st1.push(x);
+    }
+    
+    public int pop() {
+        if(!st2.isEmpty()) return st2.pop();
+        while(!st1.isEmpty()){
+            st2.push(st1.pop());
+        }
+        return st2.pop();
+    }
+    
+    public int peek() {
+        if(!st2.isEmpty()) return st2.peek();
+        while(!st1.isEmpty()){
+            st2.push(st1.pop());
+        }
+        return st2.peek();
+    }
+    
+    public boolean empty() {
+        if(st1.size() == 0 && st2.size() == 0) return true;
+        return false;
+    }
+}
+
+//Ques 3 : (link--> https://leetcode.com/problems/final-prices-with-a-special-discount-in-a-shop/)
+
+class Solution {
+    public int[] finalPrices(int[] prices) {
+        int i = 0;
+        int j = 0;
+        while(i < prices.length){
+            j = i+1;
+            while(j < prices.length && prices[j] > prices[i]){
+                j++;
+            }
+            if(j < prices.length && prices[j] <= prices[i]) prices[i] -= prices[j];
+            i++;
+        }
+        return prices;
+    }
+}
