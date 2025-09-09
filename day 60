@@ -1,0 +1,86 @@
+//Ques 1 : (link--> https://leetcode.com/problems/min-stack/)
+
+class MinStack {
+
+    List<Integer> st;
+    List<Integer> list;
+    public MinStack() {
+        st = new ArrayList<>();
+        list = new ArrayList<>();
+    }
+    
+    public void push(int val) {
+        st.add(val);
+        int i = 0;
+        while(i < list.size() && list.get(i) < val) i++;
+        list.add(i, val);
+    }
+    
+    public void pop() {
+        int val = st.remove(st.size()-1);
+        int i = 0;
+        while(i < list.size() && list.get(i) != val) i++;
+        list.remove(i);
+    }
+    
+    public int top() {
+        return st.get(st.size()-1);
+    }
+    
+    public int getMin() {
+        return list.get(0);
+    }
+}
+
+//Ques 2 : (link--> https://leetcode.com/problems/evaluate-reverse-polish-notation/)
+//          time : O(n) space : O(n)
+
+//Approch : use stack 
+class Solution {
+    public int evalRPN(String[] tokens) {
+        Stack<Integer> st = new Stack<>();
+        for(int i = 0; i < tokens.length; i++){
+            if(tokens[i].equals("+") || tokens[i].equals("-") || tokens[i].equals("*") || tokens[i].equals("/")){
+                int num1 = st.pop();
+                int num2 = st.pop();
+                switch(tokens[i]){
+                    case "+" : st.push(num2+num1);
+                               break;
+                    case "-" : st.push(num2-num1);
+                               break;
+                    case "*" : st.push(num2*num1);
+                               break;
+                    case "/" : st.push(num2/num1);
+                               break;
+                }
+            }
+            else{
+                st.push(Integer.parseInt(tokens[i]));
+            }
+        }
+        return st.peek();
+    }
+}
+
+//Ques 3 : (link--> https://leetcode.com/problems/removing-stars-from-a-string/)
+//         time : O(n)  space : O(n)
+
+//Approach : use stack to store the char and the top each time star appears at last join all the char together to get the desired string
+class Solution {
+    public String removeStars(String s) {
+        Stack<Character> st = new Stack<>();
+        for(char ch : s.toCharArray()){
+            if(ch != '*'){
+                st.push(ch);
+            }
+            else{
+                st.pop();
+            }
+        }
+        StringBuilder str = new StringBuilder();
+        while(!st.isEmpty()){
+            str.insert(0, st.pop());
+        }
+        return str.toString();
+    }
+}
